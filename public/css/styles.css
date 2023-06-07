@@ -67,7 +67,7 @@ nav ul li:hover {
 }
 
 #wrapper {
-  margin: 15px 150px;
+  margin: 15px 350px;
   border: 5px solid rgb(67, 194, 220);
   border-radius: 10px;
   padding: 10px;
@@ -154,7 +154,19 @@ nav ul li:hover {
   margin-bottom: 20px;
 }
 
-@media (max-width: 900px) {
+@media (max-width: 1500px) {
+  #wrapper {
+    margin: 15px 200px;
+  }
+}
+
+@media (max-width: 1200px) {
+  #wrapper {
+    margin: 15px 150px;
+  }
+}
+
+@media (max-width: 992px) {
   .vehicle-details {
     display: block;
   }
@@ -163,7 +175,7 @@ nav ul li:hover {
   }
 }
 
-@media (max-width: 550px) {
+@media (max-width: 576px) {
   #wrapper {
     border: none;
     margin: 0;
