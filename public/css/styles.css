@@ -240,6 +240,10 @@ footer {
   margin-top: 20px;
 }
 
+footer a:visited {
+  color: blue;
+}
+
 @media (max-width: 1500px) {
   #wrapper {
     margin: 15px 200px;

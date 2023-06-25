@@ -2,6 +2,11 @@ const invModel = require('../models/inventory-model');
 const Util = {};
 
 /* ************************
+ * Formats number with commas
+ ************************** */
+Util.formatNumber = (number) => new Intl.NumberFormat('en-US').format(number);
+
+/* ************************
  * Constructs the nav HTML unordered list
  ************************** */
 Util.getNav = async () => {
@@ -47,8 +52,6 @@ Util.buildClassificationGrid = (data) => {
   }
   return grid;
 };
-
-Util.formatNumber = (number) => new Intl.NumberFormat('en-US').format(number);
 
 /* **************************************
  * Build the inventory detail view HTML
