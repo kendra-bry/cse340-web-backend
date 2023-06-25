@@ -1,11 +1,10 @@
 const router = require('express').Router();
 const util = require('../utilities');
-const inventoryRoute = require('./inventoryRoute');
-const errorRoute = require('./errorRoute');
 const baseController = require('../controllers/baseController');
 
 router.get('/', util.handleErrors(baseController.buildHome));
-router.use('/inv', inventoryRoute);
-router.use('/error', errorRoute);
+router.use('/account', require('./accountRoute'));
+router.use('/inv', require('./inventoryRoute'));
+router.use('/error', require('./errorRoute'));
 
 module.exports = router;

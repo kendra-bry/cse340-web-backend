@@ -43,6 +43,7 @@ app.use((req, res, next) => {
   res.locals.messages = require('express-messages')(req, res);
   next();
 });
+app.use(express.json()).use(express.urlencoded({ extended: true }));
 
 /* ***********************
  * View Engine and Templates

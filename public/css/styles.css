@@ -259,6 +259,104 @@ nav ul li a {
   font-weight: 600;
 }
 
+.login-container {
+  display: flex;
+  justify-content: center;
+}
+
+.login-form {
+  width: 40%;
+  padding: 15px;
+  margin-top: 20px;
+  border-radius: 5px;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+  background: rgb(255, 255, 255);
+  background: linear-gradient(335deg, rgba(255, 255, 255, 1) 67%, rgba(67, 194, 220, 1) 100%);
+}
+
+.login-form h1 {
+  margin-top: 0;
+  text-align: center;
+}
+
+.form-input {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 15px;
+}
+
+.form-input label {
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 3px;
+}
+
+.form-input input {
+  padding: 8px 11px;
+  border-radius: 5px;
+  border: 1px solid rgb(109, 109, 109);
+}
+
+.form-input small {
+  font-size: 12px;
+  color: rgb(43, 43, 43);
+  margin-top: 4px;
+}
+
+.login-form button {
+  width: 100%;
+  backface-visibility: hidden;
+  background-color: #43c2dc;
+  border-radius: 5px;
+  border-width: 0;
+  box-shadow: rgba(50, 50, 93, 0.1) 0 0 0 1px inset, rgba(50, 50, 93, 0.1) 0 2px 5px 0, rgba(0, 0, 0, 0.07) 0 1px 1px 0;
+  box-sizing: border-box;
+  cursor: pointer;
+  height: 40px;
+  line-height: 1.15;
+  outline: none;
+  overflow: hidden;
+  padding: 0 25px;
+  font-size: 16px;
+}
+
+.login-form button:disabled {
+  cursor: default;
+}
+
+.login-form button:hover {
+  background-color: rgba(67,194,220, 0.6);
+}
+
+.sign-up {
+  display: flex;
+  justify-content: center;
+  margin-top: 15px;
+  font-size: 14px;
+}
+
+.sign-up a {
+  color: black;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.sign-up a:hover {
+  color: #3091a5 !important;
+}
+
+.sign-up a:visited {
+  color: black;
+}
+
+input:required:invalid, input:focus:invalid {
+ border: 2px solid red;
+}
+
+input:required:valid {
+ border: 2px solid green;
+}
+
 footer {
   margin-top: 20px;
 }
@@ -320,7 +418,6 @@ footer a:visited {
   .name-price {
     margin-left: 0;
   }
-
 }
 
 @media (max-width: 450px) {
