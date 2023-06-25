@@ -9,8 +9,6 @@
 const chalk = require('chalk');
 const express = require('express');
 const expressLayouts = require('express-ejs-layouts');
-const baseController = require('./controllers/baseController');
-const inventoryRoute = require('./routes/inventoryRoute');
 const util = require('./utilities');
 const app = express();
 
@@ -32,8 +30,7 @@ app.use(require('./routes/static'));
 /* ***********************
  * Routes
  *************************/
-app.get('/', util.handleErrors(baseController.buildHome));
-app.use('/inv', inventoryRoute);
+app.use('/', require('./routes'));
 
 // File Not Found Route - must be last route in list
 app.use(async (req, res, next) => {

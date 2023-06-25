@@ -1,7 +1,7 @@
 // Needed Resources
 const router = require('express').Router();
-const invController = require('../controllers/invController');
 const util = require('../utilities/');
+const invController = require('../controllers/invController');
 
 // Route to build inventory by classification view
 router.get('/type/:classificationId', util.handleErrors(invController.buildByClassificationId));
