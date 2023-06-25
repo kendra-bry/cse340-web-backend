@@ -196,6 +196,10 @@ nav ul li a {
   height: 100%;
 }
 
+.name-price h2 {
+  margin-top: 0;
+}
+
 .details-container {
   display: flex;
   gap: 15px;
@@ -284,6 +288,20 @@ footer a:visited {
   .details-container {
     display: block;
   }
+
+  .inv-list a {
+    display: block;
+    text-align: center;
+  }
+
+  .inv-list a img {
+    width: 100%;
+  }
+
+  .name-price {
+    margin-left: 0;
+  }
+
 }
 
 @media (max-width: 450px) {
