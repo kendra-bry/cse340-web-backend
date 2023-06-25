@@ -34,13 +34,11 @@ Util.buildClassificationGrid = (data) => {
       grid += `<li class="inv-list">
         <a href="../../inv/detail/${vehicle.inv_id}" title="View ${vehicle.inv_make} ${vehicle.inv_model} details">
           <img src="${vehicle.inv_thumbnail}" alt="Image of ${vehicle.inv_make} ${vehicle.inv_model} on CSE Motors" />
+          <div class="name-price">
+              <h2>${vehicle.inv_make} ${vehicle.inv_model}</h2>
+              <span>$${Util.formatNumber(vehicle.inv_price)}</span>
+          </div>
         </a>
-        <div class="name-price">
-          <a href="../../inv/detail/${vehicle.inv_id}" title="View ${vehicle.inv_make} ${vehicle.inv_model} details">
-            <h2>${vehicle.inv_make} ${vehicle.inv_model}</h2>
-            <span>$${Util.formatNumber(vehicle.inv_price)}</span>
-          </a>
-        </div>
       </li>`;
     });
     grid += '</ul>';
