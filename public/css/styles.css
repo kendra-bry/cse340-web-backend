@@ -42,6 +42,11 @@ nav ul li:hover {
   background-color: cadetblue;
 }
 
+nav ul li a {
+  color: white;
+  text-decoration: none;
+}
+
 .copyright {
   margin: 0;
 }
@@ -154,6 +159,82 @@ nav ul li:hover {
   margin-bottom: 20px;
 }
 
+#inv-display {
+  list-style-type: none;
+  padding-left: 0;
+}
+
+.inv-list {
+  border: 1px solid rgb(182, 182, 182);
+  margin-bottom: 10px;
+  border-radius: 3px;
+  padding: 15px;
+  display: flex;
+}
+
+.inv-list a {
+  text-decoration: none;
+}
+
+.inv-list a:visited {
+  text-decoration: none;
+  color: black;
+}
+
+.name-price {
+  margin-left: 20px;
+  width: 100%;
+}
+
+.name-price a {
+  width: 100%;
+  height: 100%;
+}
+
+.details-container {
+  display: flex;
+  gap: 15px;
+}
+
+.details-container > * {
+  flex: 1;
+}
+
+.details-img img {
+  width: 100%;
+  height: auto;
+}
+
+.detail-item {
+  display: flex;
+}
+
+.detail-price {
+  width: 100%;
+  height: 75px;
+  background-color: #e6ecf8;
+  border-radius: 3px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 25px;
+  font-size: larger;
+}
+
+.detail-description {
+  border-top: 2px solid rgb(182, 182, 182);
+  margin-top: 15px;
+  padding-top: 15px;
+}
+
+.fw-bold {
+  font-weight: 700;
+}
+
+footer {
+  margin-top: 20px;
+}
+
 @media (max-width: 1500px) {
   #wrapper {
     margin: 15px 200px;
@@ -175,6 +256,12 @@ nav ul li:hover {
   }
 }
 
+@media (max-width: 620px) {
+  nav ul li {
+    padding: 1.2rem 0.1rem;
+  }
+}
+
 @media (max-width: 576px) {
   #wrapper {
     border: none;
@@ -184,19 +271,22 @@ nav ul li:hover {
   .background-img {
     background-image: url('');
   }
+
+  .details-container {
+    display: block;
+  }
 }
 
 @media (max-width: 450px) {
   nav ul li {
     padding: 1.2rem 0.5rem;
   }
-  .hero-text-body {
-    margin: 0;
-  }
-}
 
-@media (max-width: 350px) {
   nav ul {
     flex-direction: column;
+  }
+
+  .hero-text-body {
+    margin: 0;
   }
 }
