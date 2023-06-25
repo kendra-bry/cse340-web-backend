@@ -39,7 +39,7 @@ nav ul li {
 }
 
 nav ul li:hover {
-  background-color: cadetblue;
+  background-color: rgb(60, 174, 197);
 }
 
 nav ul li a {
@@ -178,6 +178,7 @@ nav ul li a {
 .inv-list a {
   display: flex;
   text-decoration: none;
+  color: black;
 }
 
 .inv-list a:visited {
