@@ -3,10 +3,10 @@ const db = require('../database/');
 /* *****************************
  *   Register new account
  * *************************** */
-const registerAccount = async (account_firstname, account_lastname, account_email, account_password) => {
+const registerAccount = async (account_firstname, account_lastname, account_email, hashedPassword) => {
   try {
     const sql = "INSERT INTO account (account_firstname, account_lastname, account_email, account_password, account_type) VALUES ($1, $2, $3, $4, 'Client') RETURNING *";
-    return await db.query(sql, [account_firstname, account_lastname, account_email, account_password]);
+    return await db.query(sql, [account_firstname, account_lastname, account_email, hashedPassword]);
   } catch (error) {
     console.error({ registerAccount: error });
     return error.message;
