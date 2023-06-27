@@ -21,17 +21,17 @@
               <form action="/account/register" method="POST" id="register-form">
                 <div class="form-input">
                   <label for="firstName">First Name</label>
-                  <input required type="text" placeholder="First Name" id="firstName" name="account_firstname">
+                  <input required type="text" placeholder="First Name" id="firstName" name="account_firstname" value="<%= locals.account_firstname %>">
                 </div>
 
                 <div class="form-input">
                   <label for="lastName">Last Name</label>
-                  <input required type="text" placeholder="Last Name" id="lastName" name="account_lastname">
+                  <input required type="text" placeholder="Last Name" id="lastName" name="account_lastname" value="<%= locals.account_lastname %>">
                 </div>
 
                 <div class="form-input">
                   <label for="email">Email</label>
-                  <input required type="email" placeholder="Email" id="email" name="account_email">
+                  <input required type="email" placeholder="Email" id="email" name="account_email" value="<%= locals.account_email%>">
                 </div>
 
                 <div class="form-input">
