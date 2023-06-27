@@ -8,25 +8,34 @@
       <% } else { res.redirect('/') } %>
 
         <%- messages() %>
+          <% if (errors) { %>
+            <ul class="flash-error">
+              <% errors.array().forEach(error=> { %>
+                <li>
+                  <%= error.msg %>
+                </li>
+                <% }) %>
+            </ul>
+            <% } %>
 
-          <form action="/account/login" method="POST" id="login-form">
-            <div class="form-input">
-              <label for="username">Username</label>
-              <input required type="email" placeholder="Username" id="username" name="account_email">
-            </div>
+              <form action="/account/login" method="POST" id="login-form">
+                <div class="form-input">
+                  <label for="username">Username</label>
+                  <input required type="email" placeholder="Username" id="username" name="account_email" value="<%= locals.account_email%>">
+                </div>
 
-            <div class="form-input">
-              <label for="password">Password</label>
-              <input required type="password" placeholder="Password" id="password" name="account_password">
-            </div>
+                <div class="form-input">
+                  <label for="password">Password</label>
+                  <input required type="password" placeholder="Password" id="password" name="account_password">
+                </div>
 
-            <button type="submit">Submit</button>
+                <button type="submit">Submit</button>
 
-            <div class="sign-up">
-              No account? &nbsp;
-              <a href="/account/register">Sign Up</a>
-            </div>
-          </form>
+                <div class="sign-up">
+                  No account? &nbsp;
+                  <a href="/account/register">Sign Up</a>
+                </div>
+              </form>
 
   </div>
 

@@ -42,13 +42,25 @@ validate.registrationRules = () => {
   ];
 };
 
+/*  **********************************
+ *  Login Data Validation Rules
+ * ********************************* */
+validate.loginRules = () => {
+  return [
+    // Username is required
+    body('account_email').trim().isEmail().withMessage('Username or password is incorrect.'),
+
+    // Password is required
+    body('account_password').trim().isLength({ min: 12 }).withMessage('Username or password is incorrect.'),
+  ];
+};
+
 /* ******************************
  * Check data and return errors or continue to registration
  * ***************************** */
 validate.checkRegData = async (req, res, next) => {
+  console.log('hit');
   const { account_firstname, account_lastname, account_email } = req.body;
-  // let errors = [];
-  // errors = validationResult(req);
   const errors = validationResult(req) || [];
   if (!errors.isEmpty()) {
     let nav = await util.getNav();
@@ -58,6 +70,25 @@ validate.checkRegData = async (req, res, next) => {
       nav,
       account_firstname,
       account_lastname,
+      account_email,
+    });
+    return;
+  }
+  next();
+};
+
+/* ******************************
+ * Check data and return errors or continue to login
+ * ***************************** */
+validate.checkLoginData = async (req, res, next) => {
+  const { account_email } = req.body;
+  const errors = validationResult(req) || [];
+  if (!errors.isEmpty()) {
+    let nav = await util.getNav();
+    res.render('account/login', {
+      errors,
+      title: 'Login',
+      nav,
       account_email,
     });
     return;
