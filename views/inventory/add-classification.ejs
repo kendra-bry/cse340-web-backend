@@ -1,0 +1,25 @@
+<% if (title) { %>
+  <h1>
+    <%= title %>
+  </h1>
+<% } else { res.redirect('/') } %>
+
+<%- messages() %>
+<% if (errors) { %>
+  <ul class="flash-error">
+    <% errors.array().forEach(error=> { %>
+      <li>
+        <%= error.msg %>
+      </li>
+      <% }) %>
+  </ul>
+<% } %>
+
+<form action="/inv/add-classification" method="POST">
+  <div class="form-input">
+    <label for="classificationName">Classification Name</label>
+    <input required type="text" placeholder="Hover Cars" id="classificationName" name="classification_name" value="<%= locals.classification_name %>">
+  </div>
+
+  <button type="submit">Submit</button>
+</form>

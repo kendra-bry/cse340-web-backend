@@ -1,9 +1,11 @@
 const db = require('../database/');
 
+const inventoryModel = {};
+
 /* ***************************
  *  Get all classification data
  * ************************** */
-const getClassifications = async () => {
+inventoryModel.getClassifications = async () => {
   try {
     return await db.query('SELECT * FROM public.classification ORDER BY classification_name');
   } catch (error) {
@@ -15,7 +17,7 @@ const getClassifications = async () => {
 /* ***************************
  *  Get all inventory items and classification_name by classification_id
  * ************************** */
-const getInventoryByClassificationId = async (classification_id) => {
+inventoryModel.getInventoryByClassificationId = async (classification_id) => {
   try {
     const data = await db.query(
       `SELECT * FROM public.inventory AS i
@@ -31,14 +33,13 @@ const getInventoryByClassificationId = async (classification_id) => {
   }
 };
 
-const getInventoryDetailsByInvId = async (inv_id) => {
+inventoryModel.getInventoryDetailsByInvId = async (inv_id) => {
   try {
     const data = await db.query(
       `SELECT * FROM public.inventory AS i
        WHERE i.inv_id = $1`,
       [inv_id]
     );
-    console.log({data: data.rows});
     return data.rows[0];
   } catch (error) {
     console.error({ getInventoryDetailsByInvId: error });
@@ -46,4 +47,25 @@ const getInventoryDetailsByInvId = async (inv_id) => {
   }
 };
 
-module.exports = { getClassifications, getInventoryByClassificationId, getInventoryDetailsByInvId };
+inventoryModel.createNewClassification = async (classification_name) => {
+  try {
+    const sql = 'INSERT INTO classification (classification_name) VALUES ($1) RETURNING *';
+    return await db.query(sql, [classification_name]);
+  } catch (error) {
+    console.error({ createNewClassification: error });
+    return error.message;
+  }
+};
+
+inventoryModel.checkExistingClassification = async (classification_name) => {
+  try {
+    const sql = 'SELECT * FROM classification WHERE classification_name = $1';
+    const classificationName = await db.query(sql, [classification_name]);
+    return classificationName.rowCount;
+  } catch (error) {
+    console.error({ createNewClassification: error });
+    return error.message;
+  }
+};
+
+module.exports = inventoryModel;
