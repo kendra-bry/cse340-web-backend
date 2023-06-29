@@ -1,9 +1,11 @@
 const db = require('../database/');
 
+const accountModel = {};
+
 /* *****************************
  *   Register new account
  * *************************** */
-const registerAccount = async (account_firstname, account_lastname, account_email, hashedPassword) => {
+accountModel.registerAccount = async (account_firstname, account_lastname, account_email, hashedPassword) => {
   try {
     const sql = "INSERT INTO account (account_firstname, account_lastname, account_email, account_password, account_type) VALUES ($1, $2, $3, $4, 'Client') RETURNING *";
     return await db.query(sql, [account_firstname, account_lastname, account_email, hashedPassword]);
@@ -16,14 +18,15 @@ const registerAccount = async (account_firstname, account_lastname, account_emai
 /* **********************
  *   Check for existing email
  * ********************* */
-const checkExistingEmail = async (account_email) => {
+accountModel.checkExistingEmail = async (account_email) => {
   try {
     const sql = "SELECT * FROM account WHERE account_email = $1"
     const email = await db.query(sql, [account_email])
     return email.rowCount
   } catch (error) {
+     console.error({ checkExistingEmail: error });
     return error.message
   }
 }
 
-module.exports = { registerAccount, checkExistingEmail };
+module.exports = accountModel;

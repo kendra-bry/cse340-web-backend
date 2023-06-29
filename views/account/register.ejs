@@ -2,49 +2,50 @@
 
   <div class="login-form">
     <% if (title) { %>
-      <h1>
-        <%= title %>
-      </h1>
-      <% } else { res.redirect('/') } %>
+      <h1><%= title %></h1>
+    <% } else { res.redirect('/') } %>
 
-        <%- messages() %>
-          <% if (errors) { %>
-            <ul class="flash-error">
-              <% errors.array().forEach(error=> { %>
-                <li>
-                  <%= error.msg %>
-                </li>
-                <% }) %>
-            </ul>
-            <% } %>
+    <%- messages() %>
+    <% if (errors) { %>
+      <ul class="flash-error">
+        <% errors.array().forEach(error=> { %>
+          <li>
+            <%= error.msg %>
+          </li>
+          <% }) %>
+      </ul>
+    <% } %>
 
-              <form action="/account/register" method="POST" id="register-form">
-                <div class="form-input">
-                  <label for="firstName">First Name</label>
-                  <input required type="text" placeholder="First Name" id="firstName" name="account_firstname" value="<%= locals.account_firstname %>">
-                </div>
+    <form action="/account/register" method="POST" id="register-form">
+      <div class="form-input">
+        <label for="firstName">First Name</label>
+        <input required type="text" placeholder="First Name" id="firstName" name="account_firstname" value="<%= locals.account_firstname %>">
+      </div>
 
-                <div class="form-input">
-                  <label for="lastName">Last Name</label>
-                  <input required type="text" placeholder="Last Name" id="lastName" name="account_lastname" value="<%= locals.account_lastname %>">
-                </div>
+      <div class="form-input">
+        <label for="lastName">Last Name</label>
+        <input required type="text" placeholder="Last Name" id="lastName" name="account_lastname" value="<%= locals.account_lastname %>">
+      </div>
 
-                <div class="form-input">
-                  <label for="email">Email</label>
-                  <input required type="email" placeholder="Email" id="email" name="account_email" value="<%= locals.account_email%>">
-                </div>
+      <div class="form-input">
+        <label for="email">Email</label>
+        <input required type="email" placeholder="Email" id="email" name="account_email" value="<%= locals.account_email%>">
+      </div>
 
-                <div class="form-input">
-                  <label for="password">Password</label>
-                  <input required type="password" placeholder="Password" id="password" name="account_password" pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s).{12,}$">
-                  <small>Passwords must be at least 12 characters and contain at least 1 number, 1 capital letter and 1 special character.</small>
-                </div>
+      <div class="form-input">
+        <label for="password">Password</label>
+        <input required type="password" placeholder="Password" id="password" name="account_password" pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s).{12,}$">
+        <small>Passwords must be at least 12 characters and contain at least 1 number, 1 capital letter and 1 special character.</small>
+      </div>
 
-                <button type="submit">Submit</button>
+      <button type="submit">Submit</button>
 
-              </form>
+      <div class="sign-up">
+        <a href="/account/login">Return to Login</a>
+      </div>
+
+    </form>
 
   </div>
-
-
+  
 </div>

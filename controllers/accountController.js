@@ -2,11 +2,13 @@ const bcrypt = require('bcryptjs');
 const util = require('../utilities');
 const { registerAccount } = require('../models/account-model');
 
+const accountCont = {}
+
 /* ****************************************
  *  Deliver login view
  * *************************************** */
-const buildLogin = async(req, res, next) => {
-  let nav = await util.getNav();
+accountCont.buildLogin = async(req, res) => {
+  const nav = await util.getNav();
   res.render('account/login', {
     title: 'Login',
     nav,
@@ -17,8 +19,8 @@ const buildLogin = async(req, res, next) => {
 /* ****************************************
  *  Deliver Registration view
  * *************************************** */
-const buildRegistration = async (req, res, next) => {
-  let nav = await util.getNav();
+accountCont.buildRegistration = async (req, res) => {
+  const nav = await util.getNav();
   res.render('account/register', {
     title: 'Register',
     nav,
@@ -29,8 +31,8 @@ const buildRegistration = async (req, res, next) => {
 /* ****************************************
  *  Process Registration
  * *************************************** */
-const processRegistration = async (req, res, next) => {
-  let nav = await util.getNav();
+accountCont.processRegistration = async (req, res) => {
+  const nav = await util.getNav();
   const { account_firstname, account_lastname, account_email, account_password } = req.body;
 
   let hashedPassword;
@@ -65,4 +67,4 @@ const processRegistration = async (req, res, next) => {
   }
 }
 
-module.exports = { buildLogin, buildRegistration, processRegistration };
+module.exports = accountCont;

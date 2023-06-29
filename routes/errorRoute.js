@@ -1,7 +1,7 @@
-const util = require('../utilities');
 const router = require('express').Router();
-const errorController = require('../controllers/errorController');
+const { handleErrors } = require('../utilities');
+const { throwError } = require('../controllers/errorController');
 
-router.get('/', util.handleErrors(errorController.throwError));
+router.get('/', handleErrors(throwError));
 
 module.exports = router;

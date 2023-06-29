@@ -59,11 +59,11 @@ validate.loginRules = () => {
  * Check data and return errors or continue to registration
  * ***************************** */
 validate.checkRegData = async (req, res, next) => {
-  console.log('hit');
   const { account_firstname, account_lastname, account_email } = req.body;
   const errors = validationResult(req) || [];
   if (!errors.isEmpty()) {
-    let nav = await util.getNav();
+    const nav = await util.getNav();
+
     res.render('account/register', {
       errors,
       title: 'Registration',
@@ -84,7 +84,7 @@ validate.checkLoginData = async (req, res, next) => {
   const { account_email } = req.body;
   const errors = validationResult(req) || [];
   if (!errors.isEmpty()) {
-    let nav = await util.getNav();
+    const nav = await util.getNav();
     res.render('account/login', {
       errors,
       title: 'Login',
