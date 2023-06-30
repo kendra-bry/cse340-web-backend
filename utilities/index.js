@@ -16,7 +16,7 @@ Util.getNav = async () => {
     list += '<li><a href="/" title="Home page">Home</a></li>';
     data.rows.forEach((row) => {
       list += `<li>
-        <a href="/inv/type/${row.classification_id}" title="See our inventory of ${row.classification_name} vehicles.">
+        <a href="/inv/type/${row.classification_id}" title="See our inventory of ${row.classification_name} vehicles." class="test">
           ${row.classification_name}
         </a>
       </li>`;
@@ -99,6 +99,22 @@ Util.buildInventoryDetail = (data) => {
  * General Error Handling
  * Unit 3, Activities
  * ************************************ */
-Util.handleErrors = fn => (req, res, next) => Promise.resolve(fn(req, res, next)).catch(next);
+Util.handleErrors = (fn) => (req, res, next) => Promise.resolve(fn(req, res, next)).catch(next);
+
+Util.buildClassificationSelector = (data, selectedValue) => {
+  let select = '<select name="classification_id" id="classification_id" required>';
+  select += '<option value="">Classification</option>';
+  data.rows.forEach((row) => {
+    let option = `
+    <option value="${row.classification_id}" `
+    if (row.classification_id == selectedValue) {
+      option += 'selected'
+    }
+    option += `>${row.classification_name}</option>`;
+    select += option;
+  });
+  select += '</select>';
+  return select;
+};
 
 module.exports = Util;

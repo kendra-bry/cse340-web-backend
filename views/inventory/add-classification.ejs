@@ -1,7 +1,5 @@
 <% if (title) { %>
-  <h1>
-    <%= title %>
-  </h1>
+  <h1><%= title %></h1>
 <% } else { res.redirect('/') } %>
 
 <%- messages() %>
@@ -15,11 +13,17 @@
   </ul>
 <% } %>
 
-<form action="/inv/add-classification" method="POST">
-  <div class="form-input">
-    <label for="classificationName">Classification Name</label>
-    <input required type="text" placeholder="Hover Cars" id="classificationName" name="classification_name" value="<%= locals.classification_name %>">
+<div class="form-container">
+  <div class="main-form">
+
+    <form action="/inv/add-classification" method="POST">
+      <div class="form-input">
+        <label for="classificationName">Classification Name</label>
+        <input required type="text" placeholder="Hover Cars" id="classificationName" name="classification_name" value="<%= locals.classification_name %>">
+      </div>
+
+      <button type="submit">Submit</button>
+    </form>
   </div>
 
-  <button type="submit">Submit</button>
-</form>
+</div>

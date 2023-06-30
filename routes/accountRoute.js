@@ -18,6 +18,7 @@ router.get('/login', handleErrors(buildLogin));
 router.post('/login', loginRules(), checkLoginData, (req, res) => {
   res.status(200).send('login process');
 });
+
 router.get('/register', handleErrors(buildRegistration));
 router.post('/register', registrationRules(), checkRegData, handleErrors(processRegistration));
 

@@ -1,7 +1,83 @@
 <% if (title) { %>
-  <h1>
-    <%= title %>
-  </h1>
+  <h1><%= title %></h1>
 <% } else { res.redirect('/') } %>
 
 <%- messages() %>
+<% if (errors) { %>
+  <ul class="flash-error">
+    <% errors.array().forEach(error=> { %>
+      <li>
+        <%= error.msg %>
+      </li>
+      <% }) %>
+  </ul>
+<% } %>
+
+<div class="form-container">
+  <div class="main-form inventory-form">
+
+    <form action="/inv/add-inventory" method="POST">
+      <!-- Make -->
+      <div class="form-input">
+        <label for="inv_make">Make</label>
+        <input required type="text" placeholder="Toyota" id="inv_make" name="inv_make" value="<%= locals.inv_make %>">
+      </div>
+      <!-- Model -->
+      <div class="form-input">
+        <label for="inv_model">Model</label>
+        <input required type="text" placeholder="Carolla" id="inv_model" name="inv_model" value="<%= locals.inv_model %>">
+      </div>
+      <!-- Year -->
+      <div class="form-input">
+        <label for="inv_year">Year</label>
+        <input required type="number" placeholder="2023" id="inv_year" name="inv_year" value="<%= locals.inv_year %>">
+      </div>
+      <!-- Description -->
+      <div class="form-input">
+        <label for="inv_description">Description</label>
+        <textarea required placeholder="Description" id="inv_description" name="inv_description" rows="4">
+          <%= locals.inv_description %>
+        </textarea>
+      </div>
+      <!-- Image -->
+      <div class="form-input">
+        <label for="inv_image">Image</label>
+        <input required type="text" readonly id="inv_image" name="inv_image" value="/images/vehicles/no-image.png">
+      </div>
+      <!-- Thumbnail -->
+      <div class="form-input">
+        <label for="inv_thumbnail">Thumbnail</label>
+          <input required type="text" readonly placeholder="Thumbnail" id="inv_thumbnail" name="inv_thumbnail" value="/images/vehicles/no-image-tn.png">
+      </div>
+      <!-- Price -->
+      <div class="form-input">
+        <label for="inv_price">Price</label>
+        <div class="input-group">
+          <span>$</span>
+          &nbsp;
+          <input required type="number" placeholder="3,500" id="inv_price" name="inv_price" value="<%= locals.inv_price %>">
+          &nbsp;
+          <span>.00</span>
+        </div>
+      </div>
+      <!-- Miles -->
+      <div class="form-input">
+        <label for="inv_miles">Miles</label>
+        <input required type="number" placeholder="80,000" id="inv_miles" name="inv_miles" value="<%= locals.inv_miles %>">
+      </div>
+      <!-- Color -->
+      <div class="form-input">
+        <label for="inv_color">Color</label>
+        <input required type="text" placeholder="Silver" id="inv_color" name="inv_color" value="<%= locals.inv_color %>">
+      </div>
+      <!-- Classification -->
+      <div class="form-input">
+        <label for="classification_id">Classification</label>
+        <%- classificationSelectHTML %>
+      </div>
+
+      <button type="submit">Submit</button>
+    </form>
+  </div>
+
+</div>

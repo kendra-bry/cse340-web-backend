@@ -57,6 +57,30 @@ inventoryModel.createNewClassification = async (classification_name) => {
   }
 };
 
+inventoryModel.createNewInventory = async (inv_make, inv_model, inv_year, inv_description, inv_image, inv_thumbnail, inv_price, inv_miles, inv_color, classification_id) => {
+  try {
+    const sql =
+      'INSERT INTO inventory (inv_make, inv_model, inv_year, inv_description, inv_image, inv_thumbnail, inv_price, inv_miles, inv_color, classification_id) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) RETURNING *';
+
+    // prettier-ignore
+    return await db.query(sql, [
+      inv_make,
+      inv_model,
+      inv_year,
+      inv_description,
+      inv_image,
+      inv_thumbnail,
+      inv_price,
+      inv_miles,
+      inv_color,
+      classification_id
+    ]);
+  } catch (error) {
+    console.error({ createNewInventory: error });
+    return error.message;
+  }
+};
+
 inventoryModel.checkExistingClassification = async (classification_name) => {
   try {
     const sql = 'SELECT * FROM classification WHERE classification_name = $1';

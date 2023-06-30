@@ -33,9 +33,14 @@ nav ul {
 
 nav ul li {
   cursor: pointer;
-  padding: 0.8rem;
   flex: auto;
   text-align: center;
+  display: flex;
+}
+
+nav ul li a {
+  padding: 0.8rem;
+  flex: auto;
 }
 
 nav ul li:hover {
@@ -259,17 +264,21 @@ nav ul li a {
   font-weight: 600;
 }
 
-.login-container {
+.form-container {
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  align-items: center;
 }
 
-.login-form {
+.main-form {
   width: 40%;
   padding: 15px;
   margin-top: 20px;
   border-radius: 5px;
   box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+
+.login-form {
   background: rgb(255, 255, 255);
   background: linear-gradient(335deg, rgba(255, 255, 255, 1) 67%, rgba(67, 194, 220, 1) 100%);
 }
@@ -286,12 +295,14 @@ nav ul li a {
 }
 
 .form-input label {
-  font-size: 14px;
+  font-size: 16px;
   font-weight: 600;
   margin-bottom: 3px;
 }
 
-.form-input input {
+.form-input input,
+.form-input select,
+.form-input textarea {
   padding: 8px 11px;
   border-radius: 5px;
   border: 1px solid rgb(109, 109, 109);
@@ -303,7 +314,16 @@ nav ul li a {
   margin-top: 4px;
 }
 
-.login-form button {
+.form-input .input-group {
+  display: flex;
+  align-items: end;
+}
+
+.form-input .input-group input {
+  width: 100%;
+}
+
+.main-form button {
   width: 100%;
   backface-visibility: hidden;
   background-color: #43c2dc;
@@ -318,14 +338,19 @@ nav ul li a {
   overflow: hidden;
   padding: 0 25px;
   font-size: 16px;
+  margin-top: 35px;
 }
 
-.login-form button:disabled {
+.main-form button:disabled {
   cursor: default;
 }
 
-.login-form button:hover {
-  background-color: rgba(67,194,220, 0.6);
+.main-form button:hover {
+  background-color: rgba(67, 194, 220, 0.6);
+}
+
+.inventory-form {
+  width: 60%;
 }
 
 .sign-up {
@@ -349,12 +374,31 @@ nav ul li a {
   color: black;
 }
 
-input:required:invalid, input:focus:invalid {
- border: 2px solid red;
+.management-btn {
+ display: block;
+ width: 200px;
+ text-decoration: none;
+ border: 1px solid black;
+ text-align: center;
+ padding: .8rem;
+ margin-bottom: 15px;
+ font-weight: 600;
+ color: black;
+}
+
+.management-btn:hover {
+  background-color: rgb(60, 174, 197);
+  color: #fff;
+  border: 1px solid rgb(60, 174, 197);
+}
+
+input:required:invalid,
+input:focus:invalid {
+  /* border: 2px solid red; */
 }
 
 input:required:valid {
- border: 2px solid green;
+  /* border: 2px solid green; */
 }
 
 footer {
@@ -384,11 +428,17 @@ footer a:visited {
   #wrapper {
     margin: 15px 65px;
   }
+  .main-form {
+    width: 60%;
+  }
 }
 
 @media (max-width: 620px) {
   nav ul li {
     padding: 1.2rem 0.1rem;
+  }
+  .main-form {
+    width: 80%;
   }
 }
 
@@ -417,6 +467,10 @@ footer a:visited {
 
   .name-price {
     margin-left: 0;
+  }
+
+  .main-form {
+    width: 95%;
   }
 }
 
