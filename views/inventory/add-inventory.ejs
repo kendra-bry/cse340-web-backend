@@ -17,6 +17,11 @@
   <div class="main-form inventory-form">
 
     <form action="/inv/add-inventory" method="POST">
+      <!-- Classification -->
+      <div class="form-input">
+        <label for="classification_id">Classification</label>
+        <%- classificationSelectHTML %>
+      </div>
       <!-- Make -->
       <div class="form-input">
         <label for="inv_make">Make</label>
@@ -69,11 +74,6 @@
       <div class="form-input">
         <label for="inv_color">Color</label>
         <input required type="text" placeholder="Silver" id="inv_color" name="inv_color" value="<%= locals.inv_color %>">
-      </div>
-      <!-- Classification -->
-      <div class="form-input">
-        <label for="classification_id">Classification</label>
-        <%- classificationSelectHTML %>
       </div>
 
       <button type="submit">Submit</button>

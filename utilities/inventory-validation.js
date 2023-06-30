@@ -6,7 +6,6 @@ const validate = {};
 
 validate.classificationRules = () => {
   return [
-    // classification_name is required and must be string
     body('classification_name')
       .trim()
       .isLength({ min: 1 })
@@ -16,6 +15,11 @@ validate.classificationRules = () => {
         if (classificationExists) {
           throw new Error('Classification already exists.');
         }
+
+        const containsSpaceOrSpecialChars = !/^[a-zA-Z0-9]*$/.test(classification_name);
+        if (containsSpaceOrSpecialChars) {
+          throw new Error('Classification cannot contain a space or special characters.');
+        }
       }),
   ];
 };
@@ -23,15 +27,15 @@ validate.classificationRules = () => {
 validate.inventoryRules = () => {
   return [
     body('inv_make').trim().isLength({ min: 1 }).withMessage('Make is required.'),
-    body('inv_model').trim().isLength({min: 1}).withMessage('Model is required.'),
-    body('inv_year').trim().isLength({min: 1}).withMessage('Year is required.'),
-    body('inv_description').trim().isLength({min: 1}).withMessage('Description is required.'),
-    body('inv_image').trim().isLength({min: 1}).withMessage('Image is required.'),
-    body('inv_thumbnail').trim().isLength({min: 1}).withMessage('Thumbnail is required.'),
-    body('inv_price').trim().isLength({min: 1}).withMessage('Price is required.'),
-    body('inv_miles').trim().isLength({min: 1}).withMessage('Miles is required.'),
-    body('inv_color').trim().isLength({min: 1}).withMessage('Color is required.'),
-    body('classification_id').trim().isLength({min: 1}).withMessage('Classification is required.'),
+    body('inv_model').trim().isLength({ min: 1 }).withMessage('Model is required.'),
+    body('inv_year').trim().isLength({ min: 1 }).withMessage('Year is required.'),
+    body('inv_description').trim().isLength({ min: 1 }).withMessage('Description is required.'),
+    body('inv_image').trim().isLength({ min: 1 }).withMessage('Image is required.'),
+    body('inv_thumbnail').trim().isLength({ min: 1 }).withMessage('Thumbnail is required.'),
+    body('inv_price').trim().isLength({ min: 1 }).withMessage('Price is required.'),
+    body('inv_miles').trim().isLength({ min: 1 }).withMessage('Miles is required.'),
+    body('inv_color').trim().isLength({ min: 1 }).withMessage('Color is required.'),
+    body('classification_id').trim().isLength({ min: 1 }).withMessage('Classification is required.'),
   ];
 };
 
