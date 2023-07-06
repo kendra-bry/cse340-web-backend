@@ -1,3 +1,4 @@
+const jwt = require('jsonwebtoken');
 const invModel = require('../models/inventory-model');
 const Util = {};
 
@@ -106,15 +107,47 @@ Util.buildClassificationSelector = (data, selectedValue) => {
   select += '<option value="">Classification</option>';
   data.rows.forEach((row) => {
     let option = `
-    <option value="${row.classification_id}" `
-    if (row.classification_id == selectedValue) {
-      option += 'selected'
+    <option value="${row.classification_id}" `;
+    if (selectedValue && row.classification_id == selectedValue) {
+      option += 'selected';
     }
     option += `>${row.classification_name}</option>`;
     select += option;
   });
   select += '</select>';
   return select;
+};
+
+/* ****************************************
+ * Middleware to check token validity
+ **************************************** */
+Util.checkJWTToken = (req, res, next) => {
+  if (req.cookies.jwt) {
+    jwt.verify(req.cookies.jwt, process.env.ACCESS_TOKEN_SECRET, (err, accountData) => {
+      if (err) {
+        req.flash('Please log in');
+        res.clearCookie('jwt');
+        return res.redirect('/account/login');
+      }
+      res.locals.accountData = accountData;
+      res.locals.loggedin = 1;
+      next();
+    });
+  } else {
+    next();
+  }
+};
+
+/* ****************************************
+ *  Check Login
+ * ************************************ */
+Util.checkLogin = (req, res, next) => {
+  if (res.locals.loggedin) {
+    next();
+  } else {
+    req.flash('flash-error', 'Please log in.');
+    return res.redirect('/account/login');
+  }
 };
 
 module.exports = Util;

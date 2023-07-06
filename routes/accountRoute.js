@@ -10,16 +10,18 @@ const {
   buildLogin,
   buildRegistration,
   processRegistration,
+  handleLogin,
+  accountManagementView,
 } = require('../controllers/accountController');
 const router = require('express').Router();
-const { handleErrors } = require('../utilities');
+const { handleErrors, checkLogin } = require('../utilities');
 
 router.get('/login', handleErrors(buildLogin));
-router.post('/login', loginRules(), checkLoginData, (req, res) => {
-  res.status(200).send('login process');
-});
+router.post('/login', loginRules(), checkLoginData, handleErrors(handleLogin));
 
 router.get('/register', handleErrors(buildRegistration));
 router.post('/register', registrationRules(), checkRegData, handleErrors(processRegistration));
+
+router.get('/', checkLogin, handleErrors(accountManagementView));
 
 module.exports = router;

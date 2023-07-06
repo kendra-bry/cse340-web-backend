@@ -7,6 +7,9 @@ const {
   handleAddClassification,
   handleAddInventory,
   managementView,
+  getInventoryJSON,
+  editInventory,
+  handleUpdateInventory,
 } = require('../controllers/invController');
 // prettier-ignore
 const {
@@ -14,6 +17,7 @@ const {
   checkClassificationData,
   checkInventoryData,
   inventoryRules,
+  checkUpdateData,
 } = require('../utilities/inventory-validation');
 const router = require('express').Router();
 const { handleErrors } = require('../utilities/');
@@ -24,8 +28,13 @@ router.get('/add-classification', handleErrors(addClassificationView));
 router.get('/add-inventory', handleErrors(addInventoryView));
 router.get('/type/:classificationId', handleErrors(buildByClassificationId));
 router.get('/detail/:invId', handleErrors(buildByInvId));
+router.get('/getInventory/:classificationId', handleErrors(getInventoryJSON));
+router.get('/edit/:invId', handleErrors(editInventory));
+// router.get('/delete/:invId', handleErrors(buildDelete));
 
 router.post('/add-classification', classificationRules(), checkClassificationData, handleErrors(handleAddClassification));
 router.post('/add-inventory', inventoryRules(), checkInventoryData, handleErrors(handleAddInventory));
+router.post('/update', inventoryRules(), checkUpdateData, handleErrors(handleUpdateInventory));
+// router.post('/delete/:invId', handleErrors(deleteInventory));
 
 module.exports = router;

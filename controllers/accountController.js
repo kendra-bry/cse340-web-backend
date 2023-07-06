@@ -1,38 +1,39 @@
 const bcrypt = require('bcryptjs');
-const util = require('../utilities');
-const { registerAccount } = require('../models/account-model');
+const { getNav } = require('../utilities');
+const jwt = require('jsonwebtoken');
+const { registerAccount, getAccountByEmail } = require('../models/account-model');
 
-const accountCont = {}
+const accountCont = {};
 
 /* ****************************************
  *  Deliver login view
  * *************************************** */
-accountCont.buildLogin = async(req, res) => {
-  const nav = await util.getNav();
+accountCont.buildLogin = async (req, res) => {
+  const nav = await getNav();
   res.render('account/login', {
     title: 'Login',
     nav,
     errors: null,
   });
-}
+};
 
 /* ****************************************
  *  Deliver Registration view
  * *************************************** */
 accountCont.buildRegistration = async (req, res) => {
-  const nav = await util.getNav();
+  const nav = await getNav();
   res.render('account/register', {
     title: 'Register',
     nav,
     errors: null,
   });
-}
+};
 
 /* ****************************************
  *  Process Registration
  * *************************************** */
 accountCont.processRegistration = async (req, res) => {
-  const nav = await util.getNav();
+  const nav = await getNav();
   const { account_firstname, account_lastname, account_email, account_password } = req.body;
 
   let hashedPassword;
@@ -65,6 +66,44 @@ accountCont.processRegistration = async (req, res) => {
       errors: null,
     });
   }
-}
+};
+
+/* ****************************************
+ *  Handle Account Login
+ * *************************************** */
+accountCont.handleLogin = async (req, res) => {
+  try {
+    const nav = await getNav();
+    const { account_email, account_password } = req.body;
+    const accountData = await getAccountByEmail(account_email);
+    if (!accountData) {
+      req.flash('flash-error', 'Please check your credentials and try again.');
+      res.status(400).render('account/login', {
+        title: 'Login',
+        nav,
+        errors: null,
+        account_email,
+      });
+      return;
+    }
+    if (await bcrypt.compare(account_password, accountData.account_password)) {
+      delete accountData.account_password;
+      const accessToken = jwt.sign(accountData, process.env.ACCESS_TOKEN_SECRET, { expiresIn: 3600 * 1000 });
+      res.cookie('jwt', accessToken, { httpOnly: true, maxAge: 3600 * 1000 });
+      return res.redirect('/account/');
+    }
+  } catch (error) {
+    return new Error('Access Forbidden');
+  }
+};
+
+accountCont.accountManagementView = async (req, res) => {
+  const nav = await getNav();
+  res.render('account', {
+    title: 'Account Management',
+    nav,
+    errors: null,
+  });
+};
 
 module.exports = accountCont;

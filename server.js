@@ -10,7 +10,8 @@ const chalk = require('chalk');
 const express = require('express');
 const session = require('express-session');
 const expressLayouts = require('express-ejs-layouts');
-const util = require('./utilities');
+const cookieParser = require('cookie-parser');
+const { getNav, checkJWTToken} = require('./utilities');
 const pool = require('./database/');
 const app = express();
 
@@ -36,6 +37,9 @@ app.use(
     name: 'sessionId',
   })
 );
+
+app.use(cookieParser());
+app.use(checkJWTToken);
 
 // Express Messages Middleware
 app.use(require('connect-flash')());
@@ -68,7 +72,7 @@ app.use(async (req, res, next) => {
  * Place after all other middleware
  *************************/
 app.use(async (err, req, res, next) => {
-  const nav = await util.getNav();
+  const nav = await getNav();
   console.error(`Error at: "${req.originalUrl}": ${err.message}`);
   if (err.status == 404) {
     message = err.message;
