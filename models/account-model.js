@@ -43,6 +43,20 @@ accountModel.getAccountByEmail = async (account_email) => {
   }
 };
 
+/* **********************
+ *   Get account by Id
+ * ********************** */
+accountModel.getAccountById = async (account_id) => {
+  try {
+    const sql = 'SELECT * FROM account WHERE account_id = $1';
+    const data = await db.query(sql, [account_id]);
+    return data.rows[0];
+  } catch (error) {
+    console.error({ getAccountById: error });
+    return new Error('No matching account found');
+  }
+};
+
 /* ***********************************
  *  Update Account Data by account_id
  * *********************************** */

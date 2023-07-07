@@ -1,6 +1,6 @@
-const util = require('.');
+const { getNav } = require('.');
 const { body, validationResult } = require('express-validator');
-const { checkExistingEmail } = require('../models/account-model');
+const { checkExistingEmail, getAccountById } = require('../models/account-model');
 
 const validate = {};
 
@@ -12,12 +12,24 @@ const ACCOUNT_FIELD_RULES = {
   accountEmail: body('account_email')
     .trim()
     .isEmail()
-    .normalizeEmail()
     .withMessage('A valid email is required.')
-    .custom(async (account_email) => {
+    .custom(async (account_email, { req }) => {
+      const { account_id } = req.body;
       const emailExists = await checkExistingEmail(account_email);
+
+      if (account_id) {
+        const accountData = await getAccountById(account_id);
+        if (accountData && accountData.account_email !== account_email) {
+          if (emailExists) {
+            throw new Error('Email exists. Please use a different email');
+          }
+        } else {
+          return;
+        }
+      }
+
       if (emailExists) {
-        throw new Error('Email exists. Please log in or use different email');
+        throw new Error('Email exists. Please use a different email');
       }
     }),
   accountPwd: body('account_password')
@@ -87,7 +99,7 @@ validate.checkRegData = async (req, res, next) => {
   const { account_firstname, account_lastname, account_email } = req.body;
   const errors = validationResult(req) || [];
   if (!errors.isEmpty()) {
-    const nav = await util.getNav();
+    const nav = await getNav();
 
     res.render('account/register', {
       title: 'Registration',
@@ -108,7 +120,7 @@ validate.checkRegData = async (req, res, next) => {
 validate.checkUpdateData = async (req, res, next) => {
   const errors = validationResult(req) || [];
   if (!errors.isEmpty()) {
-    const nav = await util.getNav();
+    const nav = await getNav();
 
     res.render('account/update', {
       title: 'Update Account',
@@ -128,7 +140,7 @@ validate.checkLoginData = async (req, res, next) => {
   const { account_email } = req.body;
   const errors = validationResult(req) || [];
   if (!errors.isEmpty()) {
-    const nav = await util.getNav();
+    const nav = await getNav();
     res.render('account/login', {
       title: 'Login',
       nav,
