@@ -154,4 +154,29 @@ Util.checkLogin = (req, res, next) => {
   }
 };
 
+/* ****************************************
+ * Middleware to check account type
+ **************************************** */
+Util.checkAccountType = (req, res, next) => {
+  if (req.cookies.jwt) {
+    jwt.verify(req.cookies.jwt, process.env.ACCESS_TOKEN_SECRET, (err, accountData) => {
+      if (err) {
+        req.flash('Please log in');
+        res.clearCookie('jwt');
+        return res.redirect('/account/login');
+      }
+      const { account_type } = accountData;
+      if (account_type === 'Admin' || account_type === 'Employee') {
+        return next();
+      } else {
+        req.flash('flash-error', 'Account permissions invalid.');
+        return res.redirect('/account/login');
+      }
+    });
+  } else {
+    req.flash('flash-error', 'Account permissions invalid.');
+    return res.redirect('/account/login');
+  }
+};
+
 module.exports = Util;

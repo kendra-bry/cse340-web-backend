@@ -1,7 +1,7 @@
 const ctrl = require('../controllers/invController');
 const val = require('../utilities/inventory-validation');
 const router = require('express').Router();
-const { handleErrors } = require('../utilities/');
+const { handleErrors, checkAccountType } = require('../utilities/');
 
 // Route to build inventory by classification view
 router.get('/type/:classificationId', handleErrors(ctrl.classificationView));
@@ -9,7 +9,9 @@ router.get('/detail/:invId', handleErrors(ctrl.inventoryDetailsView));
 
 /* ****************************************
  *               Admin Views
- **************************************** */
+**************************************** */
+router.use(checkAccountType);
+
 router.get('/', handleErrors(ctrl.managementView));
 router.get('/add-classification', handleErrors(ctrl.addClassificationView));
 router.get('/add-inventory', handleErrors(ctrl.addInventoryView));
