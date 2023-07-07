@@ -12,6 +12,7 @@ const {
   processRegistration,
   handleLogin,
   accountManagementView,
+  handleLogout,
 } = require('../controllers/accountController');
 const router = require('express').Router();
 const { handleErrors, checkLogin } = require('../utilities');
@@ -23,5 +24,6 @@ router.get('/register', handleErrors(buildRegistration));
 router.post('/register', registrationRules(), checkRegData, handleErrors(processRegistration));
 
 router.get('/', checkLogin, handleErrors(accountManagementView));
+router.get('/logout', handleErrors(handleLogout));
 
 module.exports = router;

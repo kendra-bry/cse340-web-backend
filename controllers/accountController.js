@@ -97,6 +97,9 @@ accountCont.handleLogin = async (req, res) => {
   }
 };
 
+/* ****************************************
+ *  Deliver Account Management View
+ * *************************************** */
 accountCont.accountManagementView = async (req, res) => {
   const nav = await getNav();
   res.render('account', {
@@ -104,6 +107,20 @@ accountCont.accountManagementView = async (req, res) => {
     nav,
     errors: null,
   });
+};
+
+/* ****************************************
+ *  Handle Account Logout
+ * *************************************** */
+accountCont.handleLogout = async (req, res) => {
+  try {
+    res.locals.accountData = undefined;
+    res.locals.loggedin = undefined;
+    res.clearCookie('jwt');
+    return res.redirect('/');
+  } catch (error) {
+    return new Error('Access Forbidden');
+  }
 };
 
 module.exports = accountCont;
