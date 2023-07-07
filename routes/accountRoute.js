@@ -9,7 +9,9 @@ router.post('/login', val.loginRules(), val.checkLoginData, handleErrors(ctrl.ha
 router.get('/register', handleErrors(ctrl.registrationView));
 router.post('/register', val.registrationRules(), val.checkRegData, handleErrors(ctrl.handleRegistration));
 
-router.get('/', checkLogin, handleErrors(ctrl.accountManagementView));
+router.use(checkLogin);
+
+router.get('/', handleErrors(ctrl.accountManagementView));
 router.get('/logout', handleErrors(ctrl.handleLogout));
 
 router.get('/update', handleErrors(ctrl.accountUpdateView));
