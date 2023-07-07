@@ -1,0 +1,63 @@
+<% console.log(locals.accountData) %>
+<% if (title) { %>
+  <h1><%= title %></h1>
+<% } else { res.redirect('/') } %>
+
+<%- messages() %>
+<% if (errors) { %>
+  <ul class="flash-error">
+    <% errors.array().forEach(error=> { %>
+      <li>
+        <%= error.msg %>
+      </li>
+      <% }) %>
+  </ul>
+<% } %>
+
+<div class="form-container">
+  <div class="main-form">
+    <h3>Account Update</h3>
+    <form action="/account/update" method="POST">
+      <!-- First Name -->
+      <div class="form-input">
+        <label for="account_firstname">First Name</label>
+        <input required type="text" placeholder="First Name" id="account_firstname" name="account_firstname" value="<%= locals.accountData.account_firstname %>">
+      </div>
+      <!-- Last Name -->
+      <div class="form-input">
+        <label for="account_lastname">Last Name</label>
+        <input required type="text" placeholder="Last Name" id="account_lastname" name="account_lastname" value="<%= locals.accountData.account_lastname %>">
+      </div>
+      <!-- Email -->
+      <div class="form-input">
+        <label for="account_email">Email</label>
+        <input required type="email" placeholder="Email" id="account_email" name="account_email" value="<%= locals.accountData.account_email %>">
+      </div>
+
+      <!-- Account Id -->
+      <input type="hidden" name="account_id" <% if(locals.accountData.account_id) { %> value="<%= locals.accountData.account_id %>"
+        <% } %>>
+
+      <button type="submit">Submit</button>
+    </form>
+  </div>
+
+  <div class="main-form">
+    <h3>Change Password</h3>
+    <form action="/account/update-pwd" method="POST">
+      <!-- Password -->
+      <div class="form-input">
+        <label for="password">Password</label>
+        <input required type="password" placeholder="Password" id="password" name="account_password" pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s).{12,}$">
+        <small>Passwords must be at least 12 characters and contain at least 1 number, 1 capital letter and 1 special character.</small>
+      </div>
+
+      <!-- Account Id -->
+      <input type="hidden" name="account_id" <% if(locals.accountData.account_id) { %> value="<%= locals.accountData.account_id %>"
+        <% } %>>
+
+      <button type="submit">Submit</button>
+    </form>
+  </div>
+
+</div>

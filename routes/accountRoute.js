@@ -12,4 +12,8 @@ router.post('/register', val.registrationRules(), val.checkRegData, handleErrors
 router.get('/', checkLogin, handleErrors(ctrl.accountManagementView));
 router.get('/logout', handleErrors(ctrl.handleLogout));
 
+router.get('/update', handleErrors(ctrl.accountUpdateView));
+router.post('/update', handleErrors(ctrl.handleAccountUpdate));
+router.post('/update-pwd', handleErrors(ctrl.handlePasswordUpdate));
+
 module.exports = router;

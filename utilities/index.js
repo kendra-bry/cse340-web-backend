@@ -143,6 +143,15 @@ Util.checkJWTToken = (req, res, next) => {
 };
 
 /* ****************************************
+ * Create an access token
+ **************************************** */
+Util.createAccessToken = (accountData) => {
+  delete accountData.account_password;
+  const accessToken = jwt.sign(accountData, process.env.ACCESS_TOKEN_SECRET, { expiresIn: 3600 * 1000 });
+  return accessToken;
+};
+
+/* ****************************************
  *  Check Login
  * ************************************ */
 Util.checkLogin = (req, res, next) => {
