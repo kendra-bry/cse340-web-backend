@@ -15,9 +15,9 @@ accountModel.registerAccount = async (account_firstname, account_lastname, accou
   }
 };
 
-/* **********************
+/* ****************************
  *   Check for existing email
- * ********************* */
+ * **************************** */
 accountModel.checkExistingEmail = async (account_email) => {
   try {
     const sql = 'SELECT * FROM account WHERE account_email = $1';
@@ -31,7 +31,7 @@ accountModel.checkExistingEmail = async (account_email) => {
 
 /* **********************
  *   Get account by email
- * ********************* */
+ * ********************** */
 accountModel.getAccountByEmail = async (account_email) => {
   try {
     const sql = 'SELECT * FROM account WHERE account_email = $1';

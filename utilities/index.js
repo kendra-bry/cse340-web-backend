@@ -8,7 +8,8 @@ const Util = {};
 Util.formatNumber = (number) => new Intl.NumberFormat('en-US').format(number);
 
 /* ************************
- * Constructs the nav HTML unordered list
+ * Constructs the nav HTML
+ * unordered list
  ************************** */
 Util.getNav = async () => {
   try {
@@ -102,6 +103,9 @@ Util.buildInventoryDetail = (data) => {
  * ************************************ */
 Util.handleErrors = (fn) => (req, res, next) => Promise.resolve(fn(req, res, next)).catch(next);
 
+/* ****************************************
+ * Build the Classification Selector HTML
+ **************************************** */
 Util.buildClassificationSelector = (data, selectedValue) => {
   let select = '<select name="classification_id" id="classification_id" required>';
   select += '<option value="">Classification</option>';

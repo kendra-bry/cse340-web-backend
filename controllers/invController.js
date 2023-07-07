@@ -19,10 +19,41 @@ const {
 
 const invCont = {};
 
+// ================ VIEWS ================
+
 /* ****************************************
- *  Build inventory by classification view
+ *  Deliver Add Classification view
  * **************************************** */
-invCont.buildByClassificationId = async (req, res) => {
+invCont.addClassificationView = async (req, res) => {
+  const nav = await getNav();
+
+  res.render('./inventory/add-classification', {
+    title: 'Create New Classification',
+    nav,
+    errors: null,
+  });
+};
+
+/* ****************************************
+ *  Deliver Add Inventory view
+ * **************************************** */
+invCont.addInventoryView = async (req, res) => {
+  const nav = await getNav();
+  const data = await getClassifications();
+  const classificationSelectHTML = buildClassificationSelector(data);
+
+  res.render('./inventory/add-inventory', {
+    title: 'Add New Inventory',
+    nav,
+    classificationSelectHTML,
+    errors: null,
+  });
+};
+
+/* ****************************************
+ *  Deliver Classification view
+ * **************************************** */
+invCont.classificationView = async (req, res) => {
   const classification_id = req.params.classificationId;
   const data = await getInventoryByClassificationId(classification_id);
   const gridHTML = await buildClassificationGrid(data);
@@ -38,9 +69,58 @@ invCont.buildByClassificationId = async (req, res) => {
 };
 
 /* ****************************************
- *  Build inventory by details view
+ *  Build Delete Inventory view
  * **************************************** */
-invCont.buildByInvId = async (req, res) => {
+invCont.deleteView = async (req, res) => {
+  const inv_id = req.params.invId;
+  const nav = await getNav();
+  const details = await getInventoryDetailsByInvId(inv_id);
+  const name = `${details.inv_make} ${details.inv_model}`;
+
+  res.render('./inventory/delete-confirm', {
+    title: `Delete ${name}`,
+    nav,
+    inv_id: details.inv_id,
+    inv_make: details.inv_make,
+    inv_model: details.inv_model,
+    inv_price: details.inv_price,
+    errors: null,
+  });
+};
+/* ****************************************
+ *  Deliver Edit Inventory view
+ * **************************************** */
+invCont.editInventoryView = async (req, res) => {
+  const inv_id = req.params.invId;
+
+  const nav = await getNav();
+  const details = await getInventoryDetailsByInvId(inv_id);
+  const classifications = await getClassifications();
+  const classificationSelectHTML = await buildClassificationSelector(classifications, details.classification_id);
+
+  res.render('./inventory/edit-inventory', {
+    title: `Edit ${details.inv_make} ${details.inv_model}`,
+    nav,
+    classificationSelectHTML,
+    inv_id: details.inv_id,
+    inv_make: details.inv_make,
+    inv_model: details.inv_model,
+    inv_year: details.inv_year,
+    inv_description: details.inv_description,
+    inv_image: details.inv_image,
+    inv_thumbnail: details.inv_thumbnail,
+    inv_price: details.inv_price,
+    inv_miles: details.inv_miles,
+    inv_color: details.inv_color,
+    classification_id: details.classification_id,
+    errors: null,
+  });
+};
+
+/* ****************************************
+ *  Deliver Inventory Details view
+ * **************************************** */
+invCont.inventoryDetailsView = async (req, res) => {
   const inv_id = req.params.invId;
   const data = await getInventoryDetailsByInvId(inv_id);
   const detailsHTML = await buildInventoryDetail(data);
@@ -54,6 +134,9 @@ invCont.buildByInvId = async (req, res) => {
   });
 };
 
+/* ****************************************
+ *  Deliver Management view
+ * **************************************** */
 invCont.managementView = async (req, res) => {
   const nav = await getNav();
 
@@ -67,29 +150,24 @@ invCont.managementView = async (req, res) => {
   });
 };
 
-invCont.addClassificationView = async (req, res) => {
-  const nav = await getNav();
+// ================ HANDLERS ================
 
-  res.render('./inventory/add-classification', {
-    title: 'Create New Classification',
-    nav,
-    errors: null,
-  });
+/* ******************************
+ *  Get Inventory Details as JSON
+ * ****************************** */
+invCont.getInventoryJSON = async (req, res, next) => {
+  const classification_id = +req.params.classificationId;
+  const data = await getInventoryByClassificationId(classification_id);
+  if (data[0]?.inv_id) {
+    return res.json(data);
+  } else {
+    next(new Error('No data returned'));
+  }
 };
 
-invCont.addInventoryView = async (req, res) => {
-  const nav = await getNav();
-  const data = await getClassifications();
-  const classificationSelectHTML = buildClassificationSelector(data);
-
-  res.render('./inventory/add-inventory', {
-    title: 'Add New Inventory',
-    nav,
-    classificationSelectHTML,
-    errors: null,
-  });
-};
-
+/* ******************************
+ *  Add new Classification
+ * ****************************** */
 invCont.handleAddClassification = async (req, res) => {
   const { classification_name } = req.body;
   const response = await createNewClassification(classification_name);
@@ -112,6 +190,9 @@ invCont.handleAddClassification = async (req, res) => {
   }
 };
 
+/* ******************************
+ *  Add new Inventory
+ * ****************************** */
 invCont.handleAddInventory = async (req, res) => {
   // prettier-ignore
   const {
@@ -165,44 +246,31 @@ invCont.handleAddInventory = async (req, res) => {
   }
 };
 
-invCont.getInventoryJSON = async (req, res, next) => {
-  const classification_id = +req.params.classificationId;
-  const data = await getInventoryByClassificationId(classification_id);
-  if (data[0]?.inv_id) {
-    return res.json(data);
-  } else {
-    next(new Error('No data returned'));
-  }
-};
+/* ***************************
+ *  Delete Inventory Data
+ * ************************** */
+invCont.handleDeleteInventory = async (req, res) => {
+  const { inv_id, inv_make, inv_model } = req.body;
 
-/* ****************************************
- *  Build Edit Inventory view
- * **************************************** */
-invCont.editInventory = async (req, res) => {
-  const inv_id = req.params.invId;
-
+  const deleteResult = await deleteInventory(inv_id);
   const nav = await getNav();
-  const details = await getInventoryDetailsByInvId(inv_id);
-  const classifications = await getClassifications();
-  const classificationSelectHTML = await buildClassificationSelector(classifications, details.classification_id);
+  const itemName = `${inv_make} ${inv_model}`;
 
-  res.render('./inventory/edit-inventory', {
-    title: `Edit ${details.inv_make} ${details.inv_model}`,
-    nav,
-    classificationSelectHTML,
-    inv_id: details.inv_id,
-    inv_make: details.inv_make,
-    inv_model: details.inv_model,
-    inv_year: details.inv_year,
-    inv_description: details.inv_description,
-    inv_image: details.inv_image,
-    inv_thumbnail: details.inv_thumbnail,
-    inv_price: details.inv_price,
-    inv_miles: details.inv_miles,
-    inv_color: details.inv_color,
-    classification_id: details.classification_id,
-    errors: null,
-  });
+  if (deleteResult) {
+    req.flash('flash-notice', `The ${itemName} was successfully deleted.`);
+    res.redirect('/inv/');
+  } else {
+    req.flash('flash-error', 'Sorry, the delete failed.');
+    res.status(501).render('inventory/delete-confirm', {
+      title: `Delete ${itemName}`,
+      nav,
+      errors: null,
+      inv_id,
+      inv_make,
+      inv_model,
+      inv_price,
+    });
+  }
 };
 
 /* ***************************
@@ -267,53 +335,6 @@ invCont.handleUpdateInventory = async (req, res) => {
       inv_miles,
       inv_color,
       classification_id,
-    });
-  }
-};
-
-/* ****************************************
- *  Build Delete Inventory view
- * **************************************** */
-invCont.buildDelete = async (req, res) => {
-  const inv_id = req.params.invId;
-  const nav = await getNav();
-  const details = await getInventoryDetailsByInvId(inv_id);
-  const name = `${details.inv_make} ${details.inv_model}`;
-
-  res.render('./inventory/delete-confirm', {
-    title: `Delete ${name}`,
-    nav,
-    inv_id: details.inv_id,
-    inv_make: details.inv_make,
-    inv_model: details.inv_model,
-    inv_price: details.inv_price,
-    errors: null,
-  });
-};
-
-/* ***************************
- *  Delete Inventory Data
- * ************************** */
-invCont.handleDeleteInventory = async (req, res) => {
-  const { inv_id, inv_make, inv_model } = req.body;
-
-  const deleteResult = await deleteInventory(inv_id);
-  const nav = await getNav();
-  const itemName = `${inv_make} ${inv_model}`;
-
-  if (deleteResult) {
-    req.flash('flash-notice', `The ${itemName} was successfully deleted.`);
-    res.redirect('/inv/');
-  } else {
-    req.flash('flash-error', 'Sorry, the delete failed.');
-    res.status(501).render('inventory/delete-confirm', {
-      title: `Delete ${itemName}`,
-      nav,
-      errors: null,
-      inv_id,
-      inv_make,
-      inv_model,
-      inv_price,
     });
   }
 };

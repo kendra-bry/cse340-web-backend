@@ -5,10 +5,24 @@ const { registerAccount, getAccountByEmail } = require('../models/account-model'
 
 const accountCont = {};
 
+// ================ VIEWS ================
+
+/* ****************************************
+ *  Deliver Account Management View
+ * *************************************** */
+accountCont.accountManagementView = async (req, res) => {
+  const nav = await getNav();
+  res.render('account', {
+    title: 'Account Management',
+    nav,
+    errors: null,
+  });
+};
+
 /* ****************************************
  *  Deliver login view
  * *************************************** */
-accountCont.buildLogin = async (req, res) => {
+accountCont.loginView = async (req, res) => {
   const nav = await getNav();
   res.render('account/login', {
     title: 'Login',
@@ -20,7 +34,7 @@ accountCont.buildLogin = async (req, res) => {
 /* ****************************************
  *  Deliver Registration view
  * *************************************** */
-accountCont.buildRegistration = async (req, res) => {
+accountCont.registrationView = async (req, res) => {
   const nav = await getNav();
   res.render('account/register', {
     title: 'Register',
@@ -29,10 +43,55 @@ accountCont.buildRegistration = async (req, res) => {
   });
 };
 
+// ================ HANDLERS ================
+
 /* ****************************************
- *  Process Registration
+ *  Handle Account Login
  * *************************************** */
-accountCont.processRegistration = async (req, res) => {
+accountCont.handleLogin = async (req, res) => {
+  try {
+    const nav = await getNav();
+    const { account_email, account_password } = req.body;
+    const accountData = await getAccountByEmail(account_email);
+    if (!accountData) {
+      req.flash('flash-error', 'Please check your credentials and try again.');
+      res.status(400).render('account/login', {
+        title: 'Login',
+        nav,
+        errors: null,
+        account_email,
+      });
+      return;
+    }
+    if (await bcrypt.compare(account_password, accountData.account_password)) {
+      delete accountData.account_password;
+      const accessToken = jwt.sign(accountData, process.env.ACCESS_TOKEN_SECRET, { expiresIn: 3600 * 1000 });
+      res.cookie('jwt', accessToken, { httpOnly: true, maxAge: 3600 * 1000 });
+      return res.redirect('/account/');
+    }
+  } catch (error) {
+    return new Error('Access Forbidden');
+  }
+};
+
+/* ****************************************
+ *  Handle Account Logout
+ * *************************************** */
+accountCont.handleLogout = async (req, res) => {
+  try {
+    res.locals.accountData = undefined;
+    res.locals.loggedin = undefined;
+    res.clearCookie('jwt');
+    return res.redirect('/');
+  } catch (error) {
+    return new Error('Access Forbidden');
+  }
+};
+
+/* ****************************************
+ *  Handle Registration
+ * *************************************** */
+accountCont.handleRegistration = async (req, res) => {
   const nav = await getNav();
   const { account_firstname, account_lastname, account_email, account_password } = req.body;
 
@@ -68,59 +127,5 @@ accountCont.processRegistration = async (req, res) => {
   }
 };
 
-/* ****************************************
- *  Handle Account Login
- * *************************************** */
-accountCont.handleLogin = async (req, res) => {
-  try {
-    const nav = await getNav();
-    const { account_email, account_password } = req.body;
-    const accountData = await getAccountByEmail(account_email);
-    if (!accountData) {
-      req.flash('flash-error', 'Please check your credentials and try again.');
-      res.status(400).render('account/login', {
-        title: 'Login',
-        nav,
-        errors: null,
-        account_email,
-      });
-      return;
-    }
-    if (await bcrypt.compare(account_password, accountData.account_password)) {
-      delete accountData.account_password;
-      const accessToken = jwt.sign(accountData, process.env.ACCESS_TOKEN_SECRET, { expiresIn: 3600 * 1000 });
-      res.cookie('jwt', accessToken, { httpOnly: true, maxAge: 3600 * 1000 });
-      return res.redirect('/account/');
-    }
-  } catch (error) {
-    return new Error('Access Forbidden');
-  }
-};
-
-/* ****************************************
- *  Deliver Account Management View
- * *************************************** */
-accountCont.accountManagementView = async (req, res) => {
-  const nav = await getNav();
-  res.render('account', {
-    title: 'Account Management',
-    nav,
-    errors: null,
-  });
-};
-
-/* ****************************************
- *  Handle Account Logout
- * *************************************** */
-accountCont.handleLogout = async (req, res) => {
-  try {
-    res.locals.accountData = undefined;
-    res.locals.loggedin = undefined;
-    res.clearCookie('jwt');
-    return res.redirect('/');
-  } catch (error) {
-    return new Error('Access Forbidden');
-  }
-};
 
 module.exports = accountCont;
