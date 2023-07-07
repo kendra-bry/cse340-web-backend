@@ -4,40 +4,94 @@ const { checkExistingClassification, getClassifications } = require('../models/i
 
 const validate = {};
 
-validate.classificationRules = () => {
-  return [
-    body('classification_name')
+// ================ Rules ================
+
+// prettier-ignore
+const INV_FIELD_RULES = {
+  classificationName: body('classification_name')
+    .trim()
+    .isLength({ min: 1 })
+    .withMessage('Please provide a classification name.')
+    .custom(async (classification_name) => {
+      const classificationExists = await checkExistingClassification(classification_name);
+      if (classificationExists) {
+        throw new Error('Classification already exists.');
+      }
+
+      const containsSpaceOrSpecialChars = !/^[a-zA-Z0-9]*$/.test(classification_name);
+      if (containsSpaceOrSpecialChars) {
+        throw new Error('Classification cannot contain a space or special characters.');
+      }
+    }),
+    make: body('inv_make')
       .trim()
       .isLength({ min: 1 })
-      .withMessage('Please provide a classification name.')
-      .custom(async (classification_name) => {
-        const classificationExists = await checkExistingClassification(classification_name);
-        if (classificationExists) {
-          throw new Error('Classification already exists.');
-        }
+      .withMessage('Make is required.'),
+    model: body('inv_model')
+      .trim()
+      .isLength({ min: 1 })
+      .withMessage('Model is required.'),
+    year: body('inv_year')
+      .trim()
+      .isLength({ min: 1 })
+      .withMessage('Year is required.')
+      .isNumeric()
+      .withMessage('Year must be a number.'),
+    desc: body('inv_description')
+      .trim()
+      .isLength({ min: 1 })
+      .withMessage('Description is required.'),
+    img: body('inv_image')
+      .trim()
+      .isLength({ min: 1 })
+      .withMessage('Image is required.'),
+    thumbnail: body('inv_thumbnail')
+      .trim()
+      .isLength({ min: 1 })
+      .withMessage('Thumbnail is required.'),
+    price: body('inv_price')
+      .trim()
+      .isLength({ min: 1 })
+      .withMessage('Price is required.')
+      .isNumeric()
+      .withMessage('Price must be a number.'),
+    miles: body('inv_miles')
+      .trim()
+      .isLength({ min: 1 })
+      .withMessage('Miles is required.')
+      .isNumeric()
+      .withMessage('Miles must be a number.'),
+    color: body('inv_color')
+      .trim()
+      .isLength({ min: 1 })
+      .withMessage('Color is required.'),
+    classificationId: body('classification_id')
+      .trim()
+      .isLength({ min: 1 })
+      .withMessage('Classification is required.'),
+};
 
-        const containsSpaceOrSpecialChars = !/^[a-zA-Z0-9]*$/.test(classification_name);
-        if (containsSpaceOrSpecialChars) {
-          throw new Error('Classification cannot contain a space or special characters.');
-        }
-      }),
-  ];
+validate.classificationRules = () => {
+  return [INV_FIELD_RULES.classificationName];
 };
 
 validate.inventoryRules = () => {
+  // prettier-ignore
   return [
-    body('inv_make').trim().isLength({ min: 1 }).withMessage('Make is required.'),
-    body('inv_model').trim().isLength({ min: 1 }).withMessage('Model is required.'),
-    body('inv_year').trim().isLength({ min: 1 }).withMessage('Year is required.'),
-    body('inv_description').trim().isLength({ min: 1 }).withMessage('Description is required.'),
-    body('inv_image').trim().isLength({ min: 1 }).withMessage('Image is required.'),
-    body('inv_thumbnail').trim().isLength({ min: 1 }).withMessage('Thumbnail is required.'),
-    body('inv_price').trim().isLength({ min: 1 }).withMessage('Price is required.'),
-    body('inv_miles').trim().isLength({ min: 1 }).withMessage('Miles is required.'),
-    body('inv_color').trim().isLength({ min: 1 }).withMessage('Color is required.'),
-    body('classification_id').trim().isLength({ min: 1 }).withMessage('Classification is required.'),
+    INV_FIELD_RULES.make,
+    INV_FIELD_RULES.model,
+    INV_FIELD_RULES.year,
+    INV_FIELD_RULES.desc,
+    INV_FIELD_RULES.img,
+    INV_FIELD_RULES.thumbnail,
+    INV_FIELD_RULES.price,
+    INV_FIELD_RULES.miles,
+    INV_FIELD_RULES.color,
+    INV_FIELD_RULES.classificationId,
   ];
 };
+
+// =========== Checking Methods ============
 
 validate.checkClassificationData = async (req, res, next) => {
   const { classification_name } = req.body;

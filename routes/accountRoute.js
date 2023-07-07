@@ -13,7 +13,7 @@ router.get('/', checkLogin, handleErrors(ctrl.accountManagementView));
 router.get('/logout', handleErrors(ctrl.handleLogout));
 
 router.get('/update', handleErrors(ctrl.accountUpdateView));
-router.post('/update', handleErrors(ctrl.handleAccountUpdate));
-router.post('/update-pwd', handleErrors(ctrl.handlePasswordUpdate));
+router.post('/update', val.updateAccountRules(), val.checkUpdateData, handleErrors(ctrl.handleAccountUpdate));
+router.post('/update-pwd', val.updatePasswordRules(), val.checkUpdateData, handleErrors(ctrl.handlePasswordUpdate));
 
 module.exports = router;
