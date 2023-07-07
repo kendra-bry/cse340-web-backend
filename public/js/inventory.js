@@ -9,12 +9,16 @@ classificationList.addEventListener('change', () => {
   fetch(classIdURL)
     .then((response) => {
       if (response.ok) {
-        return response.json();
+        const contentType = response.headers.get('content-type');
+        if (contentType && contentType.includes('application/json')) {
+          return response.json();
+        } else {
+          throw Error('Response was not in JSON format');
+        }
       }
       throw Error('Network response was not OK');
     })
     .then((data) => {
-      console.log(data);
       buildInventoryList(data);
     })
     .catch((error) => {

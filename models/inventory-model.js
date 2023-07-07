@@ -2,9 +2,9 @@ const db = require('../database/');
 
 const inventoryModel = {};
 
-/* ***************************
+/* ****************************
  *  Get all classification data
- * ************************** */
+ * **************************** */
 inventoryModel.getClassifications = async () => {
   try {
     return await db.query('SELECT * FROM public.classification ORDER BY classification_name');
@@ -14,9 +14,10 @@ inventoryModel.getClassifications = async () => {
   }
 };
 
-/* ***************************
- *  Get all inventory items and classification_name by classification_id
- * ************************** */
+/* *****************************************
+ *  Get all inventory items and
+ *  classification_name by classification_id
+ * ***************************************** */
 inventoryModel.getInventoryByClassificationId = async (classification_id) => {
   try {
     const data = await db.query(
@@ -33,6 +34,9 @@ inventoryModel.getInventoryByClassificationId = async (classification_id) => {
   }
 };
 
+/* *****************************************
+ *  Get inventory data by inv_id
+ * ***************************************** */
 inventoryModel.getInventoryDetailsByInvId = async (inv_id) => {
   try {
     const data = await db.query(
@@ -47,6 +51,9 @@ inventoryModel.getInventoryDetailsByInvId = async (inv_id) => {
   }
 };
 
+/* ****************************
+ *  Create new classification
+ * **************************** */
 inventoryModel.createNewClassification = async (classification_name) => {
   try {
     const sql = 'INSERT INTO classification (classification_name) VALUES ($1) RETURNING *';
@@ -57,6 +64,9 @@ inventoryModel.createNewClassification = async (classification_name) => {
   }
 };
 
+/* ****************************
+ *  Create new inventory
+ * **************************** */
 inventoryModel.createNewInventory = async (inv_make, inv_model, inv_year, inv_description, inv_image, inv_thumbnail, inv_price, inv_miles, inv_color, classification_id) => {
   try {
     const sql =
@@ -81,6 +91,9 @@ inventoryModel.createNewInventory = async (inv_make, inv_model, inv_year, inv_de
   }
 };
 
+/* *******************************
+ *  Check if classification exists
+ * ******************************* */
 inventoryModel.checkExistingClassification = async (classification_name) => {
   try {
     const sql = 'SELECT * FROM classification WHERE classification_name = $1';
@@ -127,6 +140,19 @@ inventoryModel.updateInventory = async (
       inv_id,
     ]);
     return data.rows[0];
+  } catch (error) {
+    console.error('model error: ' + error);
+  }
+};
+
+/* ***************************
+ *  Delete Inventory Data
+ * ************************** */
+inventoryModel.deleteInventory = async (inv_id) => {
+  try {
+    const sql = 'DELETE FROM public.inventory WHERE inv_id = $1';
+    const data = await db.query(sql, [inv_id]);
+    return data;
   } catch (error) {
     console.error('model error: ' + error);
   }

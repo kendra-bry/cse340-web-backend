@@ -10,6 +10,8 @@ const {
   getInventoryJSON,
   editInventory,
   handleUpdateInventory,
+  buildDelete,
+  handleDeleteInventory,
 } = require('../controllers/invController');
 // prettier-ignore
 const {
@@ -30,11 +32,11 @@ router.get('/type/:classificationId', handleErrors(buildByClassificationId));
 router.get('/detail/:invId', handleErrors(buildByInvId));
 router.get('/getInventory/:classificationId', handleErrors(getInventoryJSON));
 router.get('/edit/:invId', handleErrors(editInventory));
-// router.get('/delete/:invId', handleErrors(buildDelete));
+router.get('/delete/:invId', handleErrors(buildDelete));
 
 router.post('/add-classification', classificationRules(), checkClassificationData, handleErrors(handleAddClassification));
 router.post('/add-inventory', inventoryRules(), checkInventoryData, handleErrors(handleAddInventory));
 router.post('/update', inventoryRules(), checkUpdateData, handleErrors(handleUpdateInventory));
-// router.post('/delete/:invId', handleErrors(deleteInventory));
+router.post('/delete', handleErrors(handleDeleteInventory));
 
 module.exports = router;

@@ -1,0 +1,59 @@
+<% if (title) { %>
+  <h1><%= title %></h1>
+<% } else { res.redirect('/') } %>
+
+<%- messages() %>
+<% if (errors) { %>
+  <ul class="flash-error">
+    <% errors.array().forEach(error=> { %>
+      <li>
+        <%= error.msg %>
+      </li>
+      <% }) %>
+  </ul>
+<% } %>
+
+<div class="form-container">
+  <div class="main-form inventory-form">
+
+    <form action="/inv/delete" method="POST" id="deleteForm">
+      <!-- Make -->
+      <div class="form-input">
+        <label for="inv_make">Make</label>
+        <input readonly required type="text" placeholder="Toyota" id="inv_make" name="inv_make" value="<%= locals.inv_make %>">
+      </div>
+      <!-- Model -->
+      <div class="form-input">
+        <label for="inv_model">Model</label>
+        <input readonly required type="text" placeholder="Carolla" id="inv_model" name="inv_model" value="<%= locals.inv_model %>">
+      </div>
+      <!-- Year -->
+      <div class="form-input">
+        <label for="inv_year">Year</label>
+        <input readonly required type="number" placeholder="2023" id="inv_year" name="inv_year" value="<%= locals.inv_year %>">
+      </div>
+      <!-- Price -->
+      <div class="form-input">
+        <label for="inv_price">Price</label>
+        <div class="input-group">
+          <span>$</span>
+          &nbsp;
+          <input readonly required type="number" placeholder="3,500" id="inv_price" name="inv_price" value="<%= locals.inv_price %>">
+          &nbsp;
+          <span>.00</span>
+        </div>
+      </div>
+      <!-- Inventory Id -->
+      <input type="hidden" name="inv_id" <% if(locals.inv_id) { %> value="<%= locals.inv_id %>"
+        <% } %>>
+
+      <p class="delete-confirm-warning">Are you sure you want to delete this vehicle? <br> This cannot be undone.</p>
+
+      <div class="delete-actions">
+        <a href="../" class="cancel-delete">Cancel</a>
+        <button type="submit" class="confirm-delete">Delete Vehicle</button>
+      </div>
+    </form>
+  </div>
+
+</div>

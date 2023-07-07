@@ -6,6 +6,7 @@ const {
   getInventoryByClassificationId,
   getInventoryDetailsByInvId,
   updateInventory,
+  deleteInventory,
 } = require('../models/inventory-model');
 
 // prettier-ignore
@@ -140,28 +141,34 @@ invCont.handleAddInventory = async (req, res) => {
     classification_id,
   );
   const nav = await getNav();
+  const data = await getClassifications();
+  const classificationSelectHTML = buildClassificationSelector(data);
 
   if (response) {
     req.flash('flash-notice', 'New inventory successfully added.');
     res.status(201).render('inventory/management', {
       title: 'Management',
       nav,
+      classificationSelectHTML,
       errors: null,
     });
   } else {
+    const data = await getClassifications();
+    const classificationSelectHTML = buildClassificationSelector(data);
     req.flash('flash-error', 'Adding new classification failed.');
     res.render('inventory/add-inventory', {
       title: 'Create New Classification',
       nav,
+      classificationSelectHTML,
       errors: null,
     });
   }
 };
 
-invCont.getInventoryJSON = async (req, res) => {
+invCont.getInventoryJSON = async (req, res, next) => {
   const classification_id = +req.params.classificationId;
   const data = await getInventoryByClassificationId(classification_id);
-  if (data[0].inv_id) {
+  if (data[0]?.inv_id) {
     return res.json(data);
   } else {
     next(new Error('No data returned'));
@@ -260,6 +267,53 @@ invCont.handleUpdateInventory = async (req, res) => {
       inv_miles,
       inv_color,
       classification_id,
+    });
+  }
+};
+
+/* ****************************************
+ *  Build Delete Inventory view
+ * **************************************** */
+invCont.buildDelete = async (req, res) => {
+  const inv_id = req.params.invId;
+  const nav = await getNav();
+  const details = await getInventoryDetailsByInvId(inv_id);
+  const name = `${details.inv_make} ${details.inv_model}`;
+
+  res.render('./inventory/delete-confirm', {
+    title: `Delete ${name}`,
+    nav,
+    inv_id: details.inv_id,
+    inv_make: details.inv_make,
+    inv_model: details.inv_model,
+    inv_price: details.inv_price,
+    errors: null,
+  });
+};
+
+/* ***************************
+ *  Delete Inventory Data
+ * ************************** */
+invCont.handleDeleteInventory = async (req, res) => {
+  const { inv_id, inv_make, inv_model } = req.body;
+
+  const deleteResult = await deleteInventory(inv_id);
+  const nav = await getNav();
+  const itemName = `${inv_make} ${inv_model}`;
+
+  if (deleteResult) {
+    req.flash('flash-notice', `The ${itemName} was successfully deleted.`);
+    res.redirect('/inv/');
+  } else {
+    req.flash('flash-error', 'Sorry, the delete failed.');
+    res.status(501).render('inventory/delete-confirm', {
+      title: `Delete ${itemName}`,
+      nav,
+      errors: null,
+      inv_id,
+      inv_make,
+      inv_model,
+      inv_price,
     });
   }
 };

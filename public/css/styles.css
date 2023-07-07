@@ -375,21 +375,52 @@ nav ul li a {
 }
 
 .management-btn {
- display: block;
- width: 200px;
- text-decoration: none;
- border: 1px solid black;
- text-align: center;
- padding: .8rem;
- margin-bottom: 15px;
- font-weight: 600;
- color: black;
+  display: block;
+  width: 200px;
+  text-decoration: none;
+  border: 1px solid black;
+  text-align: center;
+  padding: 0.8rem;
+  margin-bottom: 15px;
+  font-weight: 600;
+  color: black;
 }
 
 .management-btn:hover {
   background-color: rgb(60, 174, 197);
   color: #fff;
   border: 1px solid rgb(60, 174, 197);
+}
+
+.delete-confirm-warning {
+  text-align: center;
+  border: 2px orange solid;
+  border-radius: 5px;
+  padding: 5px 10px;
+}
+
+.cancel-delete {
+  border: none !important;
+  color: red !important;
+  background-color: #fff !important;
+  width: 50% !important;
+  text-decoration: none;
+  text-align: center;
+}
+
+.delete-actions {
+  display: flex;
+  align-items: center;
+  margin-top: 35px;
+}
+
+.confirm-delete {
+  width: 50% !important;
+  margin: 0 !important;
+}
+
+.manage-classification {
+  width: 50%;
 }
 
 input:required:invalid,
@@ -437,8 +468,13 @@ footer a:visited {
   nav ul li {
     padding: 1.2rem 0.1rem;
   }
+
   .main-form {
     width: 80%;
+  }
+
+  .manage-classification {
+    width: 100%;
   }
 }
 

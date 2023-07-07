@@ -11,7 +11,8 @@ const express = require('express');
 const session = require('express-session');
 const expressLayouts = require('express-ejs-layouts');
 const cookieParser = require('cookie-parser');
-const { getNav, checkJWTToken} = require('./utilities');
+const morgan = require('morgan');
+const { getNav, checkJWTToken } = require('./utilities');
 const pool = require('./database/');
 const app = express();
 
@@ -25,6 +26,7 @@ const host = process.env.HOST;
 /* ***********************
  * Middleware
  * ************************/
+app.use(morgan('dev'));
 app.use(
   session({
     store: new (require('connect-pg-simple')(session))({
