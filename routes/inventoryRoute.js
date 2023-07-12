@@ -6,6 +6,9 @@ const { handleErrors, checkAccountType, checkLogin } = require('../utilities/');
 // Route to build inventory by classification view
 router.get('/type/:classificationId', handleErrors(ctrl.classificationView));
 router.get('/detail/:invId', handleErrors(ctrl.inventoryDetailsView));
+router.get('/reviews/add/:invId', handleErrors(ctrl.addReviewView));
+
+router.post('/reviews/add', val.reviewsRules(), val.checkReviewsData, handleErrors(ctrl.handleAddReview));
 
 /* ****************************************
  *               Admin Views

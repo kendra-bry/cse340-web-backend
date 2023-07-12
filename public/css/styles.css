@@ -329,6 +329,11 @@ nav ul li a {
 
 .main-form button {
   width: 100%;
+  margin-top: 35px;
+}
+
+.main-form button,
+.custom-button {
   backface-visibility: hidden;
   background-color: #43c2dc;
   border-radius: 5px;
@@ -342,14 +347,23 @@ nav ul li a {
   overflow: hidden;
   padding: 0 25px;
   font-size: 16px;
-  margin-top: 35px;
 }
 
-.main-form button:disabled {
+a.custom-button {
+  color: black;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  font-weight: 600;
+}
+
+.main-form button:disabled,
+.custom-button:disabled {
   cursor: default;
 }
 
-.main-form button:hover {
+.main-form button:hover,
+.custom-button:hover {
   background-color: rgba(67, 194, 220, 0.6);
 }
 
@@ -427,6 +441,39 @@ nav ul li a {
   width: 50%;
 }
 
+.reviews-container {
+  margin-top: 15px;
+  border-top: 2px solid rgb(182, 182, 182);
+}
+
+.review-card {
+  border: 1px solid gray;
+  margin-top: 10px;
+  border-radius: 5px;
+  padding: 5px 10px;
+}
+
+.review-name {
+  display: flex;
+  justify-content: end;
+}
+
+.review-rating {
+  font-size: 14px;
+  font-weight: 700;
+  margin: 5px 0;
+}
+
+.review-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.review-header button {
+  /* height: 60%; */
+}
+
 input:required:invalid,
 input:focus:invalid {
   /* border: 2px solid red; */
@@ -460,9 +507,11 @@ footer a:visited {
   .vehicle-details {
     display: block;
   }
+
   #wrapper {
     margin: 15px 65px;
   }
+
   .main-form {
     width: 60%;
   }

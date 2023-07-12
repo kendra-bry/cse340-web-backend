@@ -58,42 +58,69 @@ Util.buildClassificationGrid = (data) => {
 /* **************************************
  * Build the inventory detail view HTML
  * ************************************ */
-Util.buildInventoryDetail = (data) => {
-  return `<div class="details-container">
-    <div class="details-img">
-      <img src="${data.inv_image}" alt="${data.inv_make} ${data.inv_model}">
+Util.buildInventoryDetail = (data, reviews) => {
+  return `<div>
+    <div class="details-container">
+      <div class="details-img">
+        <img src="${data.inv_image}" alt="${data.inv_make} ${data.inv_model}">
+      </div>
+      <div class="details">
+        <div class="detail-price">
+          <div class="fw-bold">Price: &nbsp;</div>
+          <span>$${Util.formatNumber(data.inv_price)}</span>
+        </div>
+        <div class="detail-item">
+          <div class="fw-bold">Make: &nbsp;</div>
+          <span>${data.inv_make}</span>
+        </div>
+        <div class="detail-item">
+          <div class="fw-bold">Model: &nbsp;</div>
+          <span>${data.inv_model}</span>
+        </div>
+        <div class="detail-item">
+          <div class="fw-bold">Mileage: &nbsp;</div>
+          <span>${Util.formatNumber(data.inv_miles)}</span>
+        </div>
+        <div class="detail-item">
+          <div class="fw-bold">Year: &nbsp;</div>
+          <span>${data.inv_year}</span>
+        </div>
+        <div class="detail-item">
+          <div class="fw-bold">Color: &nbsp;</div>
+          <span>${data.inv_color}</span>
+        </div>
+        <div class="detail-description">
+          <span>${data.inv_description}</span>
+        </div>
+      </div>
     </div>
-    <div class="details">
-      <div class="detail-price">
-        <div class="fw-bold">Price: &nbsp;</div>
-        <span>$${Util.formatNumber(data.inv_price)}</span>
+    <div class="reviews-container">
+      <div class="review-header">
+        <h3>Reviews</h3>
+        <a href="/inv/reviews/add/${data.inv_id}" class="custom-button">+ Add Review</a>
       </div>
-      <div class="detail-item">
-        <div class="fw-bold">Make: &nbsp;</div>
-        <span>${data.inv_make}</span>
-      </div>
-      <div class="detail-item">
-        <div class="fw-bold">Model: &nbsp;</div>
-        <span>${data.inv_model}</span>
-      </div>
-      <div class="detail-item">
-        <div class="fw-bold">Mileage: &nbsp;</div>
-        <span>${Util.formatNumber(data.inv_miles)}</span>
-      </div>
-      <div class="detail-item">
-        <div class="fw-bold">Year: &nbsp;</div>
-        <span>${data.inv_year}</span>
-      </div>
-      <div class="detail-item">
-        <div class="fw-bold">Color: &nbsp;</div>
-        <span>${data.inv_color}</span>
-      </div>
-      <div class="detail-description">
-        <span>${data.inv_description}</span>
-      </div>
+      ${createReviewCards(reviews)}
     </div>
   </div>`;
 };
+
+const createReviewCards = (reviews) => {
+  let html = ''
+  for (let review of reviews) {
+    let reviewCard = `<div class="review-card">
+      <div class="review-rating">Rating:
+        <span>${review.review_rating}/5</span>
+      </div>
+      ${review.review_content}
+      <div>
+        <small class="review-name">-${review.review_name}</small>
+      </div>
+    </div>`
+
+    html += reviewCard;
+  }
+  return html;
+}
 
 /* **************************************
  * Middleware For Handling Errors

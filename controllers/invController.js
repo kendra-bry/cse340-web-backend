@@ -2,12 +2,18 @@
 const {
   createNewClassification,
   createNewInventory,
+  deleteInventory,
   getClassifications,
   getInventoryByClassificationId,
   getInventoryDetailsByInvId,
+  getReviewsByInvId,
   updateInventory,
-  deleteInventory,
 } = require('../models/inventory-model');
+
+// prettier-ignore
+const {
+  addReview,
+} = require('../models/review-model');
 
 // prettier-ignore
 const {
@@ -87,6 +93,7 @@ invCont.deleteView = async (req, res) => {
     errors: null,
   });
 };
+
 /* ****************************************
  *  Deliver Edit Inventory view
  * **************************************** */
@@ -123,7 +130,8 @@ invCont.editInventoryView = async (req, res) => {
 invCont.inventoryDetailsView = async (req, res) => {
   const inv_id = req.params.invId;
   const data = await getInventoryDetailsByInvId(inv_id);
-  const detailsHTML = await buildInventoryDetail(data);
+  const reviews = await getReviewsByInvId(inv_id);
+  const detailsHTML = await buildInventoryDetail(data, reviews);
   const nav = await getNav();
 
   res.render('./inventory/details', {
@@ -147,6 +155,21 @@ invCont.managementView = async (req, res) => {
     nav,
     classificationSelectHTML,
     errors: null,
+  });
+};
+
+/* ****************************************
+ *  Deliver Add Review view
+ * **************************************** */
+invCont.addReviewView = async (req, res) => {
+  const nav = await getNav();
+  const inv_id = req.params.invId;
+
+  res.render('./inventory/reviews/add', {
+    title: 'Add New Review',
+    nav,
+    errors: null,
+    inv_id,
   });
 };
 
@@ -335,6 +358,38 @@ invCont.handleUpdateInventory = async (req, res) => {
       inv_miles,
       inv_color,
       classification_id,
+    });
+  }
+};
+
+/* ***************************
+ *  Add Review
+ * ************************** */
+invCont.handleAddReview = async (req, res) => {
+  const { review_rating, review_name, review_content, inv_id } = req.body;
+
+  // prettier-ignore
+  const insertResult = await addReview(
+    review_rating,
+    review_name,
+    review_content,
+    inv_id,
+  );
+  const nav = await getNav();
+
+  if (insertResult) {
+    req.flash('flash-notice', `The review was successfully added.`);
+    res.redirect(`/inv/detail/${inv_id}`);
+  } else {
+    req.flash('flash-error', 'Unable to add review.');
+    res.status(501).render('inventory/reviews/add', {
+      title: 'Add New Review',
+      nav,
+      errors: null,
+      review_rating,
+      review_name,
+      review_content,
+      inv_id,
     });
   }
 };

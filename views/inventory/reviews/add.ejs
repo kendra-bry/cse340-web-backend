@@ -1,0 +1,44 @@
+<% if (title) { %>
+  <h1><%= title %></h1>
+<% } else { res.redirect('/') } %>
+
+<%- messages() %>
+<% if (errors) { %>
+  <ul class="flash-error">
+    <% errors.array().forEach(error=> { %>
+      <li>
+        <%= error.msg %>
+      </li>
+      <% }) %>
+  </ul>
+<% } %>
+
+<div class="form-container">
+  <div class="main-form">
+
+    <form action="/inv/reviews/add" method="POST">
+      <div class="form-input">
+        <label for="review_rating">Rating (out of 5)</label>
+        <input required type="number" placeholder="0" max="5" min="1" id="review_rating" name="review_rating" value="<%= locals.review_rating %>">
+      </div>
+      <div class="form-input">
+        <label for="review_name">Name</label>
+        <input required type="text" placeholder="First and Last Name" id="review_name" name="review_name" value="<%= locals.review_name %>">
+      </div>
+      <div class="form-input">
+        <label for="review_content">Review</label>
+        <textarea required placeholder="Review" id="review_content" name="review_content">
+          <% if (locals.review_content) { %>
+            <%= locals.review_content %>
+          <% } %>
+        </textarea>
+      </div>
+
+      <!-- Inventory Id -->
+      <input type="hidden" type="number" name="inv_id" <% if(locals.inv_id) { %> value="<%= locals.inv_id %>" <% } %>>
+
+      <button type="submit">Submit</button>
+    </form>
+  </div>
+
+</div>
