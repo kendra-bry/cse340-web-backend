@@ -5,6 +5,8 @@ const {
   deleteReview,
 } = require('../models/review-model');
 
+const { getInventoryDetailsByInvId } = require('../models/inventory-model');
+
 const { getNav } = require('../utilities/');
 
 const revCont = {};
@@ -17,9 +19,10 @@ const revCont = {};
 revCont.addReviewView = async (req, res) => {
   const nav = await getNav();
   const inv_id = req.params.invId;
+  const vehicle = await getInventoryDetailsByInvId(inv_id);
 
   res.render('./reviews/add', {
-    title: 'Add New Review',
+    title: `Add New Review for ${vehicle.inv_make} ${vehicle.inv_model}`,
     nav,
     errors: null,
     inv_id,
@@ -33,10 +36,11 @@ revCont.deleteReviewView = async (req, res) => {
   const nav = await getNav();
   const review_id = req.params.reviewId;
   const review = await getReview(review_id);
+  const vehicle = await getInventoryDetailsByInvId(review.inv_id);
   const { review_rating, review_name, review_content, inv_id } = review;
 
   res.render('./reviews/delete', {
-    title: 'Delete Review',
+    title: `Delete Review ${vehicle.inv_make} ${vehicle.inv_model}`,
     nav,
     errors: null,
     review_rating,
