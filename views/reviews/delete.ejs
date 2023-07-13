@@ -36,10 +36,10 @@
       </div>
 
       <!-- Inventory Id -->
-      <input type="hidden" type="number" name="inv_id" <% if(locals.inv_id) { %> value="<%= locals.inv_id %>" <% } %>>
+      <input type="hidden" name="inv_id" <% if(locals.inv_id) { %> value="<%= locals.inv_id %>" <% } %>>
 
       <!-- Review Id -->
-      <input type="hidden" type="number" name="review_id" <% if(locals.review_id) { %> value="<%= locals.review_id %>" <% } %>>
+      <input type="hidden" name="review_id" <% if(locals.review_id) { %> value="<%= locals.review_id %>" <% } %>>
 
       <button type="submit">Submit</button>
       <div class="delete-cancel">
