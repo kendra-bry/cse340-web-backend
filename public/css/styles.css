@@ -493,6 +493,31 @@ a.custom-button {
   margin-bottom: 10px;
 }
 
+.delete-cancel {
+  width: 100%;
+  border: 2px solid red;
+  padding: 5px;
+  border-radius: 5px;
+  margin-top: 10px;
+}
+
+.delete-cancel a {
+  text-decoration: none;
+  color: red;
+  font-weight: 600;
+  display: block;
+  text-align: center;
+}
+
+.delete-cancel:hover {
+  background-color: red;
+  border: 2px solid red
+}
+
+.delete-cancel a:hover {
+  color: white;
+}
+
 input:required:invalid,
 input:focus:invalid {
   /* border: 2px solid red; */

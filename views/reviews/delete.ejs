@@ -42,6 +42,9 @@
       <input type="hidden" type="number" name="review_id" <% if(locals.review_id) { %> value="<%= locals.review_id %>" <% } %>>
 
       <button type="submit">Submit</button>
+      <div class="delete-cancel">
+        <a href="/inv/detail/<%= locals.inv_id %>">Cancel</a>
+      </div>
     </form>
   </div>
 
