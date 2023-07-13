@@ -58,7 +58,7 @@ Util.buildClassificationGrid = (data) => {
 /* **************************************
  * Build the inventory detail view HTML
  * ************************************ */
-Util.buildInventoryDetail = (data, reviews) => {
+Util.buildInventoryDetail = (data, reviews, userIsAdmin) => {
   return `<div>
     <div class="details-container">
       <div class="details-img">
@@ -99,28 +99,37 @@ Util.buildInventoryDetail = (data, reviews) => {
         <h3>Reviews</h3>
         <a href="/inv/reviews/add/${data.inv_id}" class="custom-button">+ Add Review</a>
       </div>
-      ${createReviewCards(reviews)}
+      ${createReviewCards(reviews, userIsAdmin)}
     </div>
   </div>`;
 };
 
-const createReviewCards = (reviews) => {
-  let html = ''
+const createReviewCards = (reviews, userIsAdmin) => {
+  let html = '';
   for (let review of reviews) {
     let reviewCard = `<div class="review-card">
-      <div class="review-rating">Rating:
-        <span>${review.review_rating}/5</span>
+      <div class="review-rating">
+        <div>
+          Rating:
+          <span>${review.review_rating}/5</span>
+        </div>
+        ${userIsAdmin ? addDeleteReviewBtn(review.review_id) : ''}
       </div>
       ${review.review_content}
       <div>
         <small class="review-name">-${review.review_name}</small>
       </div>
-    </div>`
+    </div>`;
 
     html += reviewCard;
   }
   return html;
-}
+};
+
+const addDeleteReviewBtn = (review_id) => {
+  let btn = `<a class="delete-review" href="/inv/reviews/delete/${review_id}">&#x2715;</a>`;
+  return btn;
+};
 
 /* **************************************
  * Middleware For Handling Errors
@@ -213,6 +222,25 @@ Util.checkAccountType = (req, res, next) => {
     req.flash('flash-error', 'Account permissions invalid.');
     return res.redirect('/account/login');
   }
+};
+
+/* *******************************************
+ * Method to check if the user is an admin
+ ********************************************* */
+Util.userIsAdmin = (req) => {
+  let isAdmin = false;
+  if (req.cookies.jwt) {
+    jwt.verify(req.cookies.jwt, process.env.ACCESS_TOKEN_SECRET, (err, accountData) => {
+      if (err) {
+        isAdmin = false;
+      }
+      const { account_type } = accountData;
+      if (account_type === 'Admin') {
+        isAdmin = true;
+      }
+    });
+  }
+  return isAdmin;
 };
 
 module.exports = Util;

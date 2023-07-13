@@ -462,6 +462,10 @@ a.custom-button {
   font-size: 14px;
   font-weight: 700;
   margin: 5px 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
 }
 
 .review-header {
@@ -470,8 +474,23 @@ a.custom-button {
   align-items: center;
 }
 
-.review-header button {
-  /* height: 60%; */
+.delete-review {
+  text-decoration: none;
+  border: 1px solid red;
+  border-radius: 5px;
+  padding: 5px 10px;
+  color: white;
+  background-color: red;
+}
+
+.delete-review:hover {
+  background-color: rgb(200, 0, 0);
+  border: 1px solid rgb(200, 0, 0);
+}
+
+.delete-header {
+  font-weight: 700;
+  margin-bottom: 10px;
 }
 
 input:required:invalid,

@@ -13,6 +13,8 @@ const {
 // prettier-ignore
 const {
   addReview,
+  getReview,
+  deleteReview,
 } = require('../models/review-model');
 
 // prettier-ignore
@@ -21,6 +23,7 @@ const {
   buildClassificationSelector,
   buildInventoryDetail,
   getNav,
+  userIsAdmin,
 } = require('../utilities/');
 
 const invCont = {};
@@ -129,9 +132,10 @@ invCont.editInventoryView = async (req, res) => {
  * **************************************** */
 invCont.inventoryDetailsView = async (req, res) => {
   const inv_id = req.params.invId;
+  const isAdmin = await userIsAdmin(req);
   const data = await getInventoryDetailsByInvId(inv_id);
   const reviews = await getReviewsByInvId(inv_id);
-  const detailsHTML = await buildInventoryDetail(data, reviews);
+  const detailsHTML = await buildInventoryDetail(data, reviews, isAdmin);
   const nav = await getNav();
 
   res.render('./inventory/details', {
@@ -169,6 +173,27 @@ invCont.addReviewView = async (req, res) => {
     title: 'Add New Review',
     nav,
     errors: null,
+    inv_id,
+  });
+};
+
+/* ****************************************
+ *  Deliver Delete Review view
+ * **************************************** */
+invCont.deleteReviewView = async (req, res) => {
+  const nav = await getNav();
+  const review_id = req.params.reviewId;
+  const review = await getReview(review_id);
+  const { review_rating, review_name, review_content, inv_id } = review;
+
+  res.render('./inventory/reviews/delete', {
+    title: 'Delete Review',
+    nav,
+    errors: null,
+    review_rating,
+    review_name,
+    review_content,
+    review_id,
     inv_id,
   });
 };
@@ -389,6 +414,34 @@ invCont.handleAddReview = async (req, res) => {
       review_rating,
       review_name,
       review_content,
+      inv_id,
+    });
+  }
+};
+
+/* ***************************
+ *  Delete Review
+ * ************************** */
+invCont.handleDeleteReview = async (req, res) => {
+  const { review_rating, review_name, review_content, review_id, inv_id } = req.body;
+
+  const deleteResult = await deleteReview(review_id);
+  console.log({deleteResult});
+  const nav = await getNav();
+
+  if (deleteResult) {
+    req.flash('flash-notice', `The review was successfully deleted.`);
+    res.redirect(`/inv/detail/${inv_id}`);
+  } else {
+    req.flash('flash-error', 'Unable to delete review.');
+    res.status(501).render('inventory/reviews/delete', {
+      title: 'Delete Review',
+      nav,
+      errors: null,
+      review_rating,
+      review_name,
+      review_content,
+      review_id,
       inv_id,
     });
   }
