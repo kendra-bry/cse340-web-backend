@@ -6,9 +6,6 @@ const { handleErrors, checkAccountType, checkLogin } = require('../utilities/');
 // Route to build inventory by classification view
 router.get('/type/:classificationId', handleErrors(ctrl.classificationView));
 router.get('/detail/:invId', handleErrors(ctrl.inventoryDetailsView));
-router.get('/reviews/add/:invId', handleErrors(ctrl.addReviewView));
-
-router.post('/reviews/add', val.reviewsRules(), val.checkReviewsData, handleErrors(ctrl.handleAddReview));
 
 /* ****************************************
  *               Admin Views
@@ -21,7 +18,6 @@ router.get('/add-classification', handleErrors(ctrl.addClassificationView));
 router.get('/add-inventory', handleErrors(ctrl.addInventoryView));
 router.get('/delete/:invId', handleErrors(ctrl.deleteView));
 router.get('/edit/:invId', handleErrors(ctrl.editInventoryView));
-router.get('/reviews/delete/:reviewId', handleErrors(ctrl.deleteReviewView));
 
 router.get('/getInventory/:classificationId', handleErrors(ctrl.getInventoryJSON));
 
@@ -29,6 +25,5 @@ router.post('/add-classification', val.classificationRules(), val.checkClassific
 router.post('/add-inventory', val.inventoryRules(), val.checkInventoryData, handleErrors(ctrl.handleAddInventory));
 router.post('/update', val.inventoryRules(), val.checkUpdateData, handleErrors(ctrl.handleUpdateInventory));
 router.post('/delete', handleErrors(ctrl.handleDeleteInventory));
-router.post('/reviews/delete', handleErrors(ctrl.handleDeleteReview));
 
 module.exports = router;

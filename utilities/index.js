@@ -97,7 +97,7 @@ Util.buildInventoryDetail = (data, reviews, userIsAdmin) => {
     <div class="reviews-container">
       <div class="review-header">
         <h3>Reviews</h3>
-        <a href="/inv/reviews/add/${data.inv_id}" class="custom-button">+ Add Review</a>
+        <a href="/reviews/add/${data.inv_id}" class="custom-button">+ Add Review</a>
       </div>
       ${createReviewCards(reviews, userIsAdmin)}
     </div>
@@ -127,7 +127,7 @@ const createReviewCards = (reviews, userIsAdmin) => {
 };
 
 const addDeleteReviewBtn = (review_id) => {
-  let btn = `<a class="delete-review" href="/inv/reviews/delete/${review_id}">&#x2715;</a>`;
+  let btn = `<a class="delete-review" href="/reviews/delete/${review_id}">&#x2715;</a>`;
   return btn;
 };
 
