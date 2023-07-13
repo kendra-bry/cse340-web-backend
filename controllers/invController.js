@@ -12,13 +12,6 @@ const {
 
 // prettier-ignore
 const {
-  addReview,
-  getReview,
-  deleteReview,
-} = require('../models/review-model');
-
-// prettier-ignore
-const {
   buildClassificationGrid,
   buildClassificationSelector,
   buildInventoryDetail,

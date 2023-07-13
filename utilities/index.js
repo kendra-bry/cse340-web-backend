@@ -127,7 +127,7 @@ const createReviewCards = (reviews, userIsAdmin) => {
 };
 
 const addDeleteReviewBtn = (review_id) => {
-  let btn = `<a class="delete-review" href="/reviews/delete/${review_id}">&#x2715;</a>`;
+  let btn = `<a title="Delete Review" class="delete-review" href="/reviews/delete/${review_id}">&#x2715;</a>`;
   return btn;
 };
 
