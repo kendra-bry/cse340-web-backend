@@ -51,23 +51,6 @@ inventoryModel.getInventoryDetailsByInvId = async (inv_id) => {
   }
 };
 
-/* *****************************************
- *  Get inventory data by inv_id
- * ***************************************** */
-inventoryModel.getReviewsByInvId = async (inv_id) => {
-  try {
-    const data = await db.query(
-      `SELECT * FROM public.review AS r
-       WHERE r.inv_id = $1`,
-      [inv_id]
-    );
-    return data.rows;
-  } catch (error) {
-    console.error({ getInventoryDetailsByInvId: error });
-    throw error;
-  }
-};
-
 /* ****************************
  *  Create new classification
  * **************************** */

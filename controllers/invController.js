@@ -1,3 +1,5 @@
+const { getReviewsByInvId } = require('../models/review-model');
+
 // prettier-ignore
 const {
   createNewClassification,
@@ -6,7 +8,6 @@ const {
   getClassifications,
   getInventoryByClassificationId,
   getInventoryDetailsByInvId,
-  getReviewsByInvId,
   updateInventory,
 } = require('../models/inventory-model');
 

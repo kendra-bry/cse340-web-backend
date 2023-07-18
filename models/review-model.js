@@ -34,6 +34,24 @@ reviewModel.getReview = async (review_id) => {
   }
 };
 
+
+/* *****************************************
+ *  Get Reviews by inventory id
+ * ***************************************** */
+reviewModel.getReviewsByInvId = async (inv_id) => {
+  try {
+    const data = await db.query(
+      `SELECT * FROM public.review AS r
+       WHERE r.inv_id = $1`,
+      [inv_id]
+    );
+    return data.rows;
+  } catch (error) {
+    console.error({ getInventoryDetailsByInvId: error });
+    throw error;
+  }
+};
+
 /* ***************************
  *  Delete Review
  * ************************** */
